@@ -40,7 +40,9 @@ also we're procrastinating on our actual assignments so this felt... meta?
 
 ## demo
 
-there's supposed to be a demo video here but we used our own app and never made one. the irony is not lost on us.
+there's supposed to be a demo video here but we used our own app and never made one. the irony is not lost on us. jk here's a demo because the organizers demanded one
+[Watch it here](https://drive.google.com/file/d/1c4f3s0SSCvF_JE9hVR7PzT4Hok2QLlFR/view?usp=sharing)
+
 
 ## "business model"
 
