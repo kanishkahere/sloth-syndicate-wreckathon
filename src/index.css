@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SLOTH Design System - Procrastination Machine */
+
+@layer base {
+  :root {
+    /* Brand Colors - SLOTH Palette */
+    --background: 221 39% 11%; /* #0B0E14 ink */
+    --surface: 215 28% 17%; /* #111827 slate-900 */
+    --foreground: 220 14% 93%; /* #E5E7EB zinc-200 */
+
+    --card: 215 28% 17%;
+    --card-foreground: 220 14% 93%;
+
+    --popover: 221 39% 11%;
+    --popover-foreground: 220 14% 93%;
+
+    /* Acid Lime Accent */
+    --primary: 73 94% 64%; /* #C5F90A */
+    --primary-foreground: 221 39% 11%;
+    --primary-glow: 73 94% 74%;
+
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 220 14% 93%;
+
+    --muted: 215 25% 20%;
+    --muted-foreground: 217 10% 64%;
+
+    --accent: 73 94% 64%;
+    --accent-foreground: 221 39% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 14% 93%;
+
+    --border: 217 19% 27%;
+    --input: 217 19% 27%;
+    --ring: 73 94% 64%;
+
+    --radius: 0.75rem;
+
+    /* Procrastination Vortex */
+    --vortex-speed: 30s;
+    --vortex-opacity: 0.6;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-vortex: repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      hsl(var(--primary) / 0.3) 0deg 6deg,
+      transparent 6deg 12deg
+    );
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.2);
+    --shadow-harsh: 0 10px 30px -10px hsl(221 39% 5% / 0.8);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.4;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+}
+
+/* SLOTH Procrastination Vortex */
+.vortex {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  background: 
+    radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 60%),
+    var(--gradient-vortex);
+  animation: vortex-spin var(--vortex-speed) linear infinite;
+  opacity: var(--vortex-opacity);
+}
+
+@keyframes vortex-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .vortex {
+    animation: none;
+  }
+}
+
+/* SLOTH Component Utilities */
+@layer components {
+  .sloth-card {
+    @apply bg-card border border-border rounded-xl p-6 shadow-lg;
+    box-shadow: var(--shadow-harsh);
+  }
+
+  .sloth-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+    @apply rounded-lg px-6 py-3 font-semibold transition-all duration-200;
+    @apply hover:scale-[1.02] active:scale-[0.98];
+    box-shadow: var(--shadow-glow);
+  }
+
+  .sloth-button-chaos {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+    @apply rounded-lg px-6 py-3 font-semibold transition-all duration-200;
+    @apply hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .sloth-text-roast {
+    @apply text-muted-foreground font-medium italic;
+  }
+
+  .sloth-gradient-text {
+    background: var(--gradient-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Micro-animations */
+  .hover-tilt {
+    @apply transition-transform duration-200 hover:rotate-1;
+  }
+
+  .chaos-bounce {
+    animation: chaos-bounce 2s ease-in-out infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+}
+
+@keyframes chaos-bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px) rotate(2deg); }
+  60% { transform: translateY(-4px) rotate(-1deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.1);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: var(--shadow-glow);
+    transform: scale(1.01);
+  }
+}

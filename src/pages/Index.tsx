@@ -1,0 +1,249 @@
+import { useState, useEffect } from 'react';
+import { ProcrastinationVortex } from '@/components/ProcrastinationVortex';
+import { LagTheSloth } from '@/components/LagTheSloth';
+import { DistractionRoulette } from '@/components/DistractionRoulette';
+import { DemotivationalQuote } from '@/components/DemotivationalQuote';
+import { ProcrastinationSuggestionModal } from '@/components/ProcrastinationSuggestionModal';
+import { SlothButton } from '@/components/ui/sloth-button';
+import { Plus, Brain, Trophy, Zap } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+const roastLines = [
+  "Ambition detected. That's new.",
+  "Focus? In this economy?",
+  "If procrastination was cardio, you'd be shredded.",
+  "Love the consistency: consistently not doing it.",
+  "Inbox zero, output zero. Balance.",
+  "You have 47 tabs and no plan.",
+  "Wild move to try today.",
+  "Let's not and say we did.",
+  "Respectfully, no.",
+  "Your focus walked out."
+];
+
+const Index = () => {
+  const [showVortexAcceleration, setShowVortexAcceleration] = useState(false);
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [newTaskText, setNewTaskText] = useState('');
+  const [showSuggestionModal, setShowSuggestionModal] = useState(false);
+  const { toast } = useToast();
+
+  // Trigger roast on idle
+  useEffect(() => {
+    const roastTimer = setTimeout(() => {
+      const randomRoast = roastLines[Math.floor(Math.random() * roastLines.length)];
+      toast({
+        description: randomRoast,
+        duration: 2500,
+      });
+    }, 5000);
+
+    return () => clearTimeout(roastTimer);
+  }, [toast]);
+
+  const handleAddTask = () => {
+    if (!newTaskText.trim()) return;
+    
+    // Show procrastination suggestion modal instead of directly adding task
+    setShowSuggestionModal(true);
+  };
+
+  const handleSelectSuggestion = (suggestion: string) => {
+    // Add the procrastination task instead
+    setTasks([...tasks, `🎯 ${suggestion}`]);
+    
+    toast({
+      description: "Perfect. Now you're thinking like a true procrastinator.",
+      duration: 3000,
+    });
+
+    // Clear the original task
+    setNewTaskText('');
+  };
+
+  const handleActuallyAddTask = () => {
+    if (!newTaskText.trim()) return;
+    
+    // If they insist on adding the real task
+    setTasks([...tasks, `⚡ ${newTaskText}`]);
+    setNewTaskText('');
+    
+    // Trigger vortex acceleration for being productive
+    setShowVortexAcceleration(true);
+    setTimeout(() => setShowVortexAcceleration(false), 3000);
+    
+    toast({
+      description: "Fine, we'll add your 'real' task. But we're judging you.",
+      duration: 3000,
+    });
+  };
+
+  const handleCompleteTask = (index: number) => {
+    // Remove the task with a roast
+    const completedTask = tasks[index];
+    setTasks(tasks.filter((_, i) => i !== index));
+    
+    toast({
+      description: `"${completedTask}" - Sure, let's call it done.`,
+      duration: 3000,
+    });
+  };
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  return (
+    <div className="min-h-screen relative">
+      <ProcrastinationVortex accelerate={showVortexAcceleration} />
+      
+      {/* Header */}
+      <header className="relative z-10 p-6 text-center border-b border-border/50">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-heading font-bold mb-2 sloth-gradient-text">
+            SLOTH
+          </h1>
+          <p className="text-lg sloth-text-roast mb-2">
+            Productivity? Nah. We optimize the <em>vibe</em> of not doing it.
+          </p>
+          <p className="text-sm text-muted-foreground">{getCurrentDate()}</p>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="relative z-10 max-w-4xl mx-auto p-6 space-y-8">
+        
+        {/* Add Task Section */}
+        <section className="sloth-card">
+          <div className="flex items-center space-x-3 mb-4">
+            <Brain className="w-6 h-6 text-primary" />
+            <h2 className="text-xl font-heading font-bold">What are we not doing today?</h2>
+          </div>
+          
+          <div className="flex space-x-3">
+            <input
+              type="text"
+              value={newTaskText}
+              onChange={(e) => setNewTaskText(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTask()}
+              placeholder="Add a regret... I mean, task"
+              className="flex-1 px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder:text-muted-foreground"
+            />
+            <SlothButton 
+              variant="chaos" 
+              onClick={handleAddTask}
+              className="px-6"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Regret
+            </SlothButton>
+          </div>
+          
+          {/* Hidden actual add button for determined users */}
+          {newTaskText.trim() && (
+            <div className="text-center pt-2">
+              <button 
+                onClick={handleActuallyAddTask}
+                className="text-xs text-muted-foreground hover:text-foreground underline"
+              >
+                Actually add "{newTaskText}" (you rebel)
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* Tasks List */}
+        {tasks.length > 0 && (
+          <section className="sloth-card">
+            <div className="flex items-center space-x-3 mb-4">
+              <Trophy className="w-6 h-6 text-destructive" />
+              <h2 className="text-xl font-heading font-bold">Your Alleged To-Do List</h2>
+            </div>
+            
+            <div className="space-y-3">
+              {tasks.map((task, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-center justify-between p-3 bg-surface rounded-lg border border-border hover:border-primary/50 transition-colors"
+                >
+                  <span className="flex-1">{task}</span>
+                  <SlothButton 
+                    variant="roast" 
+                    size="sm"
+                    onClick={() => handleCompleteTask(index)}
+                  >
+                    "Done"
+                  </SlothButton>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Distraction Roulette */}
+        <DistractionRoulette />
+
+        {/* Demotivational Quote */}
+        <DemotivationalQuote />
+
+        {/* Stats Preview */}
+        <section className="sloth-card">
+          <div className="flex items-center space-x-3 mb-4">
+            <Zap className="w-6 h-6 text-primary animate-pulse" />
+            <h2 className="text-xl font-heading font-bold">Procrastination Stats</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-surface rounded-lg">
+              <div className="text-2xl font-bold text-primary">{tasks.length}</div>
+              <div className="text-sm sloth-text-roast">Tasks Avoiding</div>
+            </div>
+            <div className="text-center p-4 bg-surface rounded-lg">
+              <div className="text-2xl font-bold text-destructive">∞</div>
+              <div className="text-sm sloth-text-roast">Minutes Wasted</div>
+            </div>
+            <div className="text-center p-4 bg-surface rounded-lg">
+              <div className="text-2xl font-bold text-accent">100%</div>
+              <div className="text-sm sloth-text-roast">Chaos Achieved</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="text-center py-8">
+          <p className="sloth-text-roast text-sm">
+            "This app isn't for doing work. It's for making avoiding work... funnier."
+          </p>
+        </footer>
+      </main>
+
+      {/* Floating Mascot */}
+      <LagTheSloth 
+        mood="smug" 
+        floating 
+        onClick={() => {
+          const randomRoast = roastLines[Math.floor(Math.random() * roastLines.length)];
+          toast({
+            description: randomRoast,
+            duration: 2500,
+          });
+        }}
+      />
+
+      {/* Procrastination Suggestion Modal */}
+      <ProcrastinationSuggestionModal 
+        isOpen={showSuggestionModal}
+        onClose={() => setShowSuggestionModal(false)}
+        onSelectSuggestion={handleSelectSuggestion}
+      />
+    </div>
+  );
+};
+
+export default Index;
