@@ -6,8 +6,10 @@ import { DemotivationalQuote } from '@/components/DemotivationalQuote';
 import { ProcrastinationSuggestionModal } from '@/components/ProcrastinationSuggestionModal';
 import { TaskCompletionGate } from '@/components/TaskCompletionGate';
 import { SlothButton } from '@/components/ui/sloth-button';
-import { Plus, Brain, Trophy, Zap } from 'lucide-react';
+import { Plus, Brain, Trophy, Zap, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { SpiralIrritation } from '@/components/SpiralIrritation';
+import { DestroyPageMode } from '@/components/DestroyPageMode';
 
 const roastLines = [
   "Ambition detected. That's new.",
@@ -111,6 +113,8 @@ const Index = () => {
   return (
     <div className="min-h-screen relative">
       <ProcrastinationVortex accelerate={showVortexAcceleration} />
+      <SpiralIrritation />
+      <DestroyPageMode />
       
       {/* Header */}
       <header className="relative z-10 p-6 text-center border-b border-border/50">
@@ -225,6 +229,12 @@ const Index = () => {
         </section>
 
         {/* Footer */}
+        <section className="text-center">
+          <SlothButton variant="link" onClick={() => setShowVortexAcceleration(true)} className="mb-2">
+            Boost Spiral (why not)
+          </SlothButton>
+        </section>
+
         <footer className="text-center py-8">
           <p className="sloth-text-roast text-sm">
             "This app isn't for doing work. It's for making avoiding work... funnier."
