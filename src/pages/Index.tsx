@@ -34,7 +34,8 @@ const roastLines = [
 
 const Index = () => {
   const [showVortexAcceleration, setShowVortexAcceleration] = useState(false);
-  const [tasks, setTasks] = useState<string[]>([]);
+  type TaskItem = { id: number; text: string; fake?: boolean };
+  const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [newTaskText, setNewTaskText] = useState('');
   const [showSuggestionModal, setShowSuggestionModal] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
@@ -69,7 +70,7 @@ const Index = () => {
 
   const handleSelectSuggestion = (suggestion: string) => {
     // Add the procrastination task instead
-    setTasks([...tasks, `🎯 ${suggestion}`]);
+    setTasks([...tasks, { id: Date.now() + Math.random(), text: `🎯 ${suggestion}` }]);
     
     toast({
       description: "Perfect. Now you're thinking like a true procrastinator.",
@@ -84,7 +85,7 @@ const Index = () => {
     if (!newTaskText.trim()) return;
     
     // If they insist on adding the real task
-    setTasks([...tasks, `⚡ ${newTaskText}`]);
+    setTasks([...tasks, { id: Date.now() + Math.random(), text: `⚡ ${newTaskText}` }]);
     setNewTaskText('');
 
     // Spiral celebration + caption
@@ -106,7 +107,7 @@ const Index = () => {
 
   const actuallyCompleteTask = () => {
     if (gateTaskIndex === null) return;
-    const completedTask = tasks[gateTaskIndex];
+    const completedTask = tasks[gateTaskIndex]?.text;
     setTasks(tasks.filter((_, i) => i !== gateTaskIndex));
     setGateOpen(false);
     setGateTaskIndex(null);
@@ -203,11 +204,11 @@ const Index = () => {
             
             <div className="space-y-3">
               {tasks.map((task, index) => (
-                <div key={index} className="p-3 bg-surface rounded-lg border border-border hover:border-primary/50 transition-colors">
+                <div key={task.id} className="relative p-3 bg-surface rounded-lg border border-border hover:border-primary/50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div>{task}</div>
-                      <div className="text-xs text-muted-foreground">(Manifestation only 💀)</div>
+                      <div>{task.text}</div>
+                      <div className="text-xs text-muted-foreground">{(task.id % 2 ? '(Like this will ever happen 😂)' : '(Manifestation only 💀)')}</div>
                     </div>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -218,6 +219,9 @@ const Index = () => {
                       <TooltipContent>Yeah right 🙄</TooltipContent>
                     </Tooltip>
                   </div>
+                  {task.fake && (
+                    <div className="absolute -top-2 right-2 text-[10px] font-black px-2 py-1 rounded bg-red-600 text-white">FAKE COMPLETION 🚨</div>
+                  )}
                 </div>
               ))}
             </div>
@@ -313,11 +317,17 @@ const Index = () => {
       {/* Task Completion Gate */}
       <TaskCompletionGate
         open={gateOpen}
-        taskLabel={gateTaskIndex !== null ? tasks[gateTaskIndex] : ''}
+        taskLabel={gateTaskIndex !== null ? (tasks[gateTaskIndex]?.text || '') : ''}
         onCancel={() => setGateOpen(false)}
         onComplete={actuallyCompleteTask}
+        onFakeComplete={() => {
+          if (gateTaskIndex === null) return;
+          setTasks(tasks.map((t, i) => i === gateTaskIndex ? { ...t, fake: true } : t));
+          setGateOpen(false);
+          setCaption('FAKE COMPLETION 🚨');
+          setTimeout(() => setCaption(null), 1200);
+        }}
         onFail={() => {
-          // expose for internal callback + local effect
           (window as any).__slothFail = () => {};
           document.body.classList.add('fail-mode');
           setCaption('POV: your GPA watching you rn 💀');
