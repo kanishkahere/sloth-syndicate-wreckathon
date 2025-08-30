@@ -16,6 +16,7 @@ import { SlothBubble } from "./components/SlothBubble";
 import { GlobalCaption } from "./components/GlobalCaption";
 import { IdleWatcher } from "./components/IdleWatcher";
 import { FailWatcher } from "./components/FailWatcher";
+import { NotificationBubble } from "./components/NotificationBubble";
 
 const queryClient = new QueryClient();
 
