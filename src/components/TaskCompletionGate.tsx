@@ -10,6 +10,7 @@ interface TaskCompletionGateProps {
   onCancel: () => void;
   onComplete: () => void;
   onFail?: () => void;
+  onFakeComplete?: () => void;
 }
 
 const prompts = [
@@ -122,6 +123,7 @@ export const TaskCompletionGate = ({ open, taskLabel, onCancel, onComplete }: Ta
           </div>
           <div className="flex gap-2">
             <SlothButton variant="ghost" onClick={onCancel}>Abort</SlothButton>
+            <SlothButton variant="destructive" onClick={() => { onFakeComplete?.(); window.dispatchEvent(new Event('sloth:mock')); }}>Skip (Cap)</SlothButton>
             <SlothButton variant="chaos" onClick={nextOrBlock}>{steps[stepIndex]?.cta || 'Ok'}</SlothButton>
             <SlothButton
               variant="roast"
