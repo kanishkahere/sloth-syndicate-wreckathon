@@ -45,6 +45,8 @@ const Index = () => {
   const [slothCelebrate, setSlothCelebrate] = useState(false);
   const [showL, setShowL] = useState(false);
   const [achOpen, setAchOpen] = useState(false);
+  const [selfieOpen, setSelfieOpen] = useState(false);
+  const [camouflageOpen, setCamouflageOpen] = useState(false);
   const { toast } = useToast();
 
   // Trigger roast on idle
