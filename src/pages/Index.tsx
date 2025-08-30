@@ -93,6 +93,7 @@ const Index = () => {
     sfxVineBoom();
     setShowL(true);
     setSlothCelebrate(true); setTimeout(() => setSlothCelebrate(false), 1500);
+    window.dispatchEvent(new Event('sloth:celebrate'));
     setTimeout(() => { setShowVortexAcceleration(false); setCaption(null); setShowL(false); }, 1500);
 
     toast({ description: "Fine, we'll add your 'real' task. But we're judging you.", duration: 3000 });
