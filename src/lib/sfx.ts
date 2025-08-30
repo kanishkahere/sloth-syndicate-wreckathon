@@ -17,3 +17,5 @@ export function sfxKazoo() { playTone(220, 110, 0.22, 'sawtooth', 0.2); }
 export function sfxGoat() { playTone(440, 220, 0.35, 'triangle', 0.25); }
 export function sfxBuzzer() { playTone(120, 60, 0.5, 'square', 0.2); }
 export function sfxGlitch() { playTone(800, 1200, 0.2, 'sawtooth', 0.12); }
+export function sfxVineBoom() { playTone(60, 40, 0.45, 'sine', 0.35); }
+export function sfxHorn() { playTone(300, 320, 0.35, 'sawtooth', 0.3); }
