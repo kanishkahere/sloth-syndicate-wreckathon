@@ -11,6 +11,7 @@ import RantFeed from "./pages/RantFeed";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
+import { SlothJumpScare } from "./components/SlothJumpScare";
 
 const queryClient = new QueryClient();
 
