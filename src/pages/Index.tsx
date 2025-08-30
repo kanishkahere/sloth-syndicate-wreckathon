@@ -215,6 +215,19 @@ const Index = () => {
           </section>
         )}
 
+        {/* Achievements CTA */}
+        <section className="text-center">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <SlothButton onClick={() => setAchOpen(true)}>
+                <Award className="w-4 h-4 mr-2" />
+                Claim Fake Achievement
+              </SlothButton>
+            </TooltipTrigger>
+            <TooltipContent>For screenshots only 🔥</TooltipContent>
+          </Tooltip>
+        </section>
+
         {/* Distraction Roulette */}
         <DistractionRoulette />
 
