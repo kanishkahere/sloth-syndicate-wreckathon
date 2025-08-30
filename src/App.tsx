@@ -39,6 +39,9 @@ const App = () => (
           <BottomNav />
           <SlothJumpScare />
           <SlothBubble />
+          <GlobalCaption />
+          <IdleWatcher />
+          <FailWatcher />
         </div>
       </BrowserRouter>
     </TooltipProvider>
