@@ -10,6 +10,8 @@ import { Plus, Brain, Trophy, Zap, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { SpiralIrritation } from '@/components/SpiralIrritation';
 import { DestroyPageMode } from '@/components/DestroyPageMode';
+import { ReelCaption } from '@/components/ReelCaption';
+import { sfxVineBoom, sfxHorn } from '@/lib/sfx';
 
 const roastLines = [
   "Ambition detected. That's new.",
@@ -31,6 +33,8 @@ const Index = () => {
   const [showSuggestionModal, setShowSuggestionModal] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
   const [gateTaskIndex, setGateTaskIndex] = useState<number | null>(null);
+  const [caption, setCaption] = useState<string | null>(null);
+  const [slothCelebrate, setSlothCelebrate] = useState(false);
   const { toast } = useToast();
 
   // Trigger roast on idle
@@ -72,11 +76,14 @@ const Index = () => {
     // If they insist on adding the real task
     setTasks([...tasks, `⚡ ${newTaskText}`]);
     setNewTaskText('');
-    
-    // Trigger vortex acceleration for being productive
+
+    // Spiral celebration + caption
     setShowVortexAcceleration(true);
-    setTimeout(() => setShowVortexAcceleration(false), 3000);
-    
+    setCaption('SHEEEESH PRODUCTIVITY');
+    sfxVineBoom();
+    setSlothCelebrate(true); setTimeout(() => setSlothCelebrate(false), 1500);
+    setTimeout(() => { setShowVortexAcceleration(false); setCaption(null); }, 1500);
+
     toast({
       description: "Fine, we'll add your 'real' task. But we're judging you.",
       duration: 3000,
@@ -243,17 +250,17 @@ const Index = () => {
       </main>
 
       {/* Floating Mascot */}
-      <LagTheSloth 
-        mood="smug" 
-        floating 
+      <LagTheSloth
+        mood="smug"
+        floating
+        celebrate={slothCelebrate}
         onClick={() => {
           const randomRoast = roastLines[Math.floor(Math.random() * roastLines.length)];
-          toast({
-            description: randomRoast,
-            duration: 2500,
-          });
+          toast({ description: randomRoast, duration: 2500 });
         }}
       />
+
+      {caption && <ReelCaption text={caption} show={!!caption} onDone={() => setCaption(null)} />}
 
       {/* Procrastination Suggestion Modal */}
       <ProcrastinationSuggestionModal
@@ -268,6 +275,13 @@ const Index = () => {
         taskLabel={gateTaskIndex !== null ? tasks[gateTaskIndex] : ''}
         onCancel={() => setGateOpen(false)}
         onComplete={actuallyCompleteTask}
+        onFail={() => {
+          // expose for internal callback + local effect
+          (window as any).__slothFail = () => {};
+          document.body.classList.add('fail-mode');
+          setCaption('POV: your GPA watching you rn 💀');
+          setTimeout(() => { document.body.classList.remove('fail-mode'); setCaption(null); }, 1400);
+        }}
       />
     </div>
   );
