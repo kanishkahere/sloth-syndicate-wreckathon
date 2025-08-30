@@ -264,10 +264,13 @@ const Index = () => {
         </section>
 
         {/* Footer */}
-        <section className="text-center">
+        <section className="text-center space-x-3">
           <SlothButton variant="link" onClick={() => setShowVortexAcceleration(true)} className="mb-2">
             Boost Spiral (why not)
           </SlothButton>
+          <SlothButton variant="link" onClick={() => {
+            document.body.classList.toggle('pastel-mode');
+          }}>Toggle Pastel Mode</SlothButton>
         </section>
 
         <footer className="text-center py-8">
