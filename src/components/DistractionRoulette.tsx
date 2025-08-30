@@ -58,6 +58,7 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
     setIsComplete(false);
     setTimeLeft(60);
     sfxHorn();
+    setOverlayOpen(true);
   };
 
   const completeTask = () => {
