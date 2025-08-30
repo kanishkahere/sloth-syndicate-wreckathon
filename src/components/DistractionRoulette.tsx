@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Shuffle, Timer, Trophy } from 'lucide-react';
 import { SlothButton } from '@/components/ui/sloth-button';
 import { LagTheSloth } from './LagTheSloth';
+import { sfxHorn } from '@/lib/sfx';
 
 const distractionPrompts = [
   "Speedrun organizing your desktop into 'Maybe'.",
@@ -54,6 +55,7 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
     setIsActive(true);
     setIsComplete(false);
     setTimeLeft(60);
+    sfxHorn();
   };
 
   const completeTask = () => {
