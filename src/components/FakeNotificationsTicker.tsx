@@ -18,6 +18,7 @@ export const FakeNotificationsTicker = () => {
     const fire = () => {
       const msg = messages[Math.floor(Math.random()*messages.length)];
       toast({ description: msg, duration: 4000 });
+      try { window.dispatchEvent(new CustomEvent('notif:show', { detail: msg })); } catch {}
     };
     timerRef.current = window.setInterval(fire, 25000);
     return () => { if (timerRef.current) window.clearInterval(timerRef.current); };
