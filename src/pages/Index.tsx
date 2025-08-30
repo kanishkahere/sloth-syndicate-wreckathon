@@ -301,6 +301,8 @@ const Index = () => {
       {showL && <ConfettiL show={showL} onDone={() => setShowL(false)} />}
 
       <FakeAchievements open={achOpen} onClose={() => setAchOpen(false)} />
+      <MascotSelfie open={selfieOpen} onClose={() => setSelfieOpen(false)} tasksCount={tasks.length} />
+      <AltTabCamouflage open={camouflageOpen} onClose={() => setCamouflageOpen(false)} />
 
       {/* Procrastination Suggestion Modal */}
       <ProcrastinationSuggestionModal
