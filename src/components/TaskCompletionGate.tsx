@@ -88,6 +88,7 @@ export const TaskCompletionGate = ({ open, taskLabel, onCancel, onComplete }: Ta
       setStepIndex(0);
       if (typeof window !== 'undefined') {
         try { (window as any).__slothFail?.(); } catch {}
+        try { window.dispatchEvent(new Event('sloth:mock')); } catch {}
       }
     }
   };
