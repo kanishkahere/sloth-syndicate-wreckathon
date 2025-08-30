@@ -43,6 +43,7 @@ const App = () => (
           <GlobalCaption />
           <IdleWatcher />
           <FailWatcher />
+          <NotificationBubble />
         </div>
       </BrowserRouter>
     </TooltipProvider>
