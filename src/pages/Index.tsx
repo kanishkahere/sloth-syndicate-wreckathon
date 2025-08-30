@@ -128,6 +128,7 @@ const Index = () => {
       <ProcrastinationVortex accelerate={showVortexAcceleration} />
       <SpiralIrritation />
       <DestroyPageMode />
+      <FakeNotificationsTicker />
       
       {/* Header */}
       <header className="relative z-10 p-6 text-center border-b border-border/50">
@@ -307,7 +308,7 @@ const Index = () => {
           // expose for internal callback + local effect
           (window as any).__slothFail = () => {};
           document.body.classList.add('fail-mode');
-          setCaption('POV: your GPA watching you rn 💀');
+          setCaption('POV: your GPA watching you rn ���');
           setTimeout(() => { document.body.classList.remove('fail-mode'); setCaption(null); }, 1400);
         }}
       />
