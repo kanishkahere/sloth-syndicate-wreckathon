@@ -224,6 +224,17 @@
   .pulse-glow {
     animation: pulse-glow 3s ease-in-out infinite;
   }
+
+  .sloth-dance {
+    animation: sloth-dance 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes sloth-dance {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(-6deg); }
+  50% { transform: translateY(0) rotate(6deg); }
+  75% { transform: translateY(-3px) rotate(-4deg); }
 }
 
 @keyframes chaos-bounce {
