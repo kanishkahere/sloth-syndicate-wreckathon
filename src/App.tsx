@@ -33,6 +33,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
+          <SlothJumpScare />
         </div>
       </BrowserRouter>
     </TooltipProvider>
