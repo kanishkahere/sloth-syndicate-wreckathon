@@ -4,6 +4,7 @@ import { LagTheSloth } from '@/components/LagTheSloth';
 import { DistractionRoulette } from '@/components/DistractionRoulette';
 import { DemotivationalQuote } from '@/components/DemotivationalQuote';
 import { ProcrastinationSuggestionModal } from '@/components/ProcrastinationSuggestionModal';
+import { TaskCompletionGate } from '@/components/TaskCompletionGate';
 import { SlothButton } from '@/components/ui/sloth-button';
 import { Plus, Brain, Trophy, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -26,6 +27,8 @@ const Index = () => {
   const [tasks, setTasks] = useState<string[]>([]);
   const [newTaskText, setNewTaskText] = useState('');
   const [showSuggestionModal, setShowSuggestionModal] = useState(false);
+  const [gateOpen, setGateOpen] = useState(false);
+  const [gateTaskIndex, setGateTaskIndex] = useState<number | null>(null);
   const { toast } = useToast();
 
   // Trigger roast on idle
@@ -79,10 +82,16 @@ const Index = () => {
   };
 
   const handleCompleteTask = (index: number) => {
-    // Remove the task with a roast
-    const completedTask = tasks[index];
-    setTasks(tasks.filter((_, i) => i !== index));
-    
+    setGateTaskIndex(index);
+    setGateOpen(true);
+  };
+
+  const actuallyCompleteTask = () => {
+    if (gateTaskIndex === null) return;
+    const completedTask = tasks[gateTaskIndex];
+    setTasks(tasks.filter((_, i) => i !== gateTaskIndex));
+    setGateOpen(false);
+    setGateTaskIndex(null);
     toast({
       description: `"${completedTask}" - Sure, let's call it done.`,
       duration: 3000,
@@ -237,10 +246,18 @@ const Index = () => {
       />
 
       {/* Procrastination Suggestion Modal */}
-      <ProcrastinationSuggestionModal 
+      <ProcrastinationSuggestionModal
         isOpen={showSuggestionModal}
         onClose={() => setShowSuggestionModal(false)}
         onSelectSuggestion={handleSelectSuggestion}
+      />
+
+      {/* Task Completion Gate */}
+      <TaskCompletionGate
+        open={gateOpen}
+        taskLabel={gateTaskIndex !== null ? tasks[gateTaskIndex] : ''}
+        onCancel={() => setGateOpen(false)}
+        onComplete={actuallyCompleteTask}
       />
     </div>
   );
