@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Shuffle, Timer, Trophy } from 'lucide-react';
 import { SlothButton } from '@/components/ui/sloth-button';
 import { LagTheSloth } from './LagTheSloth';
+import { sfxHorn } from '@/lib/sfx';
 
 const distractionPrompts = [
   "Speedrun organizing your desktop into 'Maybe'.",
@@ -47,6 +48,8 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
   const [timeLeft, setTimeLeft] = useState(60);
   const [isComplete, setIsComplete] = useState(false);
   const [roast, setRoast] = useState<string>('');
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [closePos, setClosePos] = useState({ top: 10, right: 10 });
 
   const spinRoulette = () => {
     const randomPrompt = distractionPrompts[Math.floor(Math.random() * distractionPrompts.length)];
@@ -54,6 +57,8 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
     setIsActive(true);
     setIsComplete(false);
     setTimeLeft(60);
+    sfxHorn();
+    setOverlayOpen(true);
   };
 
   const completeTask = () => {
@@ -102,14 +107,11 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
           <p className="text-muted-foreground sloth-text-roast">
             Why be productive when you can be... creative?
           </p>
-          <SlothButton 
-            variant="procrastinate" 
-            size="lg"
-            onClick={spinRoulette}
-            className="w-full"
-          >
-            Spin Distraction Roulette
-          </SlothButton>
+          <div className="mx-auto w-48 h-48 rounded-full border-4" style={{ boxShadow: '0 0 30px hsl(var(--accent)) inset, 0 0 30px hsl(var(--accent))' }}>
+            <button onClick={spinRoulette} className="w-full h-full rounded-full bg-background text-primary font-bold">
+              Spin
+            </button>
+          </div>
         </div>
       )}
 
@@ -153,6 +155,24 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
           >
             Waste More Time
           </SlothButton>
+        </div>
+      )}
+
+      {overlayOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="relative">
+            <div className="px-4 py-2 rounded bg-white text-black text-3xl md:text-5xl font-black leading-tight shadow-harsh text-center" style={{ fontFamily: 'Impact, Haettenschweiler, \"Arial Black\", sans-serif' }}>
+              {(currentPrompt || 'Go Face The Fridge. You Lose.').toUpperCase()}
+            </div>
+            <button
+              style={{ position: 'absolute', top: closePos.top, right: closePos.right }}
+              className="text-white text-xl"
+              onMouseEnter={() => setClosePos({ top: Math.random()*80+5, right: Math.random()*80+5 })}
+              onClick={() => setOverlayOpen(false)}
+            >
+              ✖
+            </button>
+          </div>
         </div>
       )}
     </div>

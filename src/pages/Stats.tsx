@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { LagTheSloth } from "@/components/LagTheSloth";
 import { ProcrastinationVortex } from "@/components/ProcrastinationVortex";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Pie, PieChart, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 const Stats = () => {
   const stats = {
@@ -46,6 +48,29 @@ const Stats = () => {
             mood="judge" 
           />
         </div>
+
+        {/* Fake Dashboard */}
+        <Card className="p-4 mb-6 bg-card/80 backdrop-blur-sm border-border/50">
+          <h3 className="text-lg font-semibold text-foreground mb-4">Fake Productivity Dashboard</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Pie */}
+            <ChartContainer config={{ procrastination: { label: 'Procrastination', color: '#FF6EC7' }, work: { label: '"Productivity"', color: '#ccc' }}}>
+              <PieChart>
+                <Pie dataKey="value" data={[{ name: 'procrastination', value: 97 }, { name: 'work', value: 3 }]} cx="50%" cy="50%" outerRadius={80} fill="#FF6EC7" />
+                <ChartTooltip content={<ChartTooltipContent />} />
+              </PieChart>
+            </ChartContainer>
+            {/* Flat line */}
+            <ChartContainer config={{ vibe: { label: 'Vibe', color: '#39FF14' }}}>
+              <LineChart data={[{x:1,y:0},{x:2,y:0},{x:3,y:0},{x:4,y:0},{x:5,y:0}]}>
+                <XAxis dataKey="x" hide /><YAxis hide domain={[0,1]} />
+                <Line type="monotone" dataKey="y" stroke="#39FF14" dot={false} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+              </LineChart>
+            </ChartContainer>
+          </div>
+          <p className="text-center text-xs text-muted-foreground mt-2">Procrastination = <span className="text-pink-400 font-bold">97%</span> (scientifically accurate)</p>
+        </Card>
 
         {/* Main Stats Grid */}
         <div className="grid grid-cols-2 gap-4 mb-6">
@@ -145,23 +170,15 @@ const Stats = () => {
         {/* Achievements */}
         <Card className="p-4 bg-card/80 backdrop-blur-sm border-border/50">
           <h3 className="text-lg font-semibold text-foreground mb-4">Hall of Shame</h3>
-          <div className="space-y-3">
-            {achievements.map((achievement) => (
-              <div key={achievement.id} className={`flex items-center space-x-3 p-3 rounded-lg border ${
-                achievement.unlocked 
-                  ? 'bg-accent/10 border-accent/30' 
-                  : 'bg-muted/30 border-border/30'
-              }`}>
-                <Trophy className={`h-5 w-5 ${
-                  achievement.unlocked ? 'text-accent' : 'text-muted-foreground'
-                }`} />
+          <div className="grid grid-cols-1 gap-3">
+            {['5 hrs Scrolling','Certified Sleep Master','Unlocked: Crying At 2 AM'].map((name, i) => (
+              <div key={i} className="flex items-center space-x-3 p-3 rounded-lg border bg-muted/30 border-border/30">
+                <div className="w-8 h-8 rounded-full bg-white shadow-inner" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">{achievement.name}</p>
-                  <p className="text-xs text-muted-foreground">{achievement.desc}</p>
+                  <p className="text-sm font-medium text-foreground">{name}</p>
+                  <p className="text-xs text-muted-foreground">Shareable, not useful.</p>
                 </div>
-                <Badge variant={achievement.unlocked ? "default" : "secondary"} className="text-xs">
-                  {achievement.unlocked ? "Unlocked" : "Locked"}
-                </Badge>
+                <Badge variant="secondary" className="text-xs">Unlocked</Badge>
               </div>
             ))}
           </div>

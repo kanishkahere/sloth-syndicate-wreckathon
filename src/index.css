@@ -8,10 +8,10 @@
 
 @layer base {
   :root {
-    /* Brand Colors - SLOTH Palette */
-    --background: 221 39% 11%; /* #0B0E14 ink */
-    --surface: 215 28% 17%; /* #111827 slate-900 */
-    --foreground: 220 14% 93%; /* #E5E7EB zinc-200 */
+    /* Brand Colors - SLOTH Palette (Dark Default) */
+    --background: 221 39% 11%;
+    --surface: 215 28% 17%;
+    --foreground: 220 14% 93%;
 
     --card: 215 28% 17%;
     --card-foreground: 220 14% 93%;
@@ -20,7 +20,7 @@
     --popover-foreground: 220 14% 93%;
 
     /* Acid Lime Accent */
-    --primary: 73 94% 64%; /* #C5F90A */
+    --primary: 73 94% 64%;
     --primary-foreground: 221 39% 11%;
     --primary-glow: 73 94% 74%;
 
@@ -63,20 +63,56 @@
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Pastel light theme (toggle by adding .pastel-mode to body) */
+  .pastel-mode {
+    --background: 43 78% 94%; /* #FAF3E0 */
+    --surface: 0 0% 100%; /* #FFFFFF */
+    --foreground: 240 10% 10%; /* near-black */
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+
+    --popover: 43 78% 94%;
+    --popover-foreground: 240 10% 10%;
+
+    --primary: 113 100% 54%; /* #39FF14 */
+    --primary-foreground: 240 10% 10%;
+    --primary-glow: 190 100% 50%; /* #00FFFF */
+
+    --secondary: 322 100% 70%; /* #FF6EC7 */
+    --secondary-foreground: 240 10% 10%;
+
+    --muted: 43 30% 86%;
+    --muted-foreground: 240 6% 35%;
+
+    --accent: 322 100% 70%;
+    --accent-foreground: 240 10% 10%;
+
+    --destructive: 0 84% 48%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 43 25% 80%;
+    --input: 43 25% 80%;
+    --ring: 113 100% 54%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(322 100% 70%), hsl(113 100% 54%));
+    --gradient-vortex: repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      hsl(190 100% 50% / 0.25) 0deg 6deg,
+      hsl(322 100% 70% / 0.25) 6deg 12deg,
+      transparent 12deg 18deg
+    );
+
+    --shadow-glow: 0 0 40px hsl(190 100% 50% / 0.25);
   }
 
   /* Typography */
@@ -112,10 +148,10 @@
   height: 100vh;
   pointer-events: none;
   z-index: -1;
-  background: 
+  background:
     radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 60%),
     var(--gradient-vortex);
-  animation: vortex-spin var(--vortex-speed) linear infinite;
+  animation: vortex-spin var(--vortex-speed) linear infinite, hue-shift 12s linear infinite;
   opacity: var(--vortex-opacity);
 }
 
@@ -130,6 +166,25 @@
     animation: none;
   }
 }
+
+/* Failure collapse mode */
+.fail-mode .vortex { transform: scale(0.96); filter: blur(2px); animation-duration: 1.2s, 0.6s; }
+
+@keyframes hue-shift {
+  0% { filter: hue-rotate(0deg) saturate(1); }
+  50% { filter: hue-rotate(45deg) saturate(1.2); }
+  100% { filter: hue-rotate(0deg) saturate(1); }
+}
+
+/* Destroy page mode */
+.destroy-mode .vortex { animation-duration: 3s, 0.5s; opacity: 0.9; }
+.destroy-mode { animation: screen-shake 0.6s linear infinite; }
+@keyframes screen-shake { 0%,100%{ transform: translate(0,0);} 20%{ transform: translate(-2px,1px);} 40%{ transform: translate(3px,-2px);} 60%{ transform: translate(-1px,2px);} 80%{ transform: translate(2px,0);} }
+
+/* Idle red tint */
+.idle-red .vortex { filter: hue-rotate(-90deg) saturate(1.6); opacity: 0.75; }
+/* Too many fails shrink */
+.skill-issue .vortex { transform: scale(0.92); filter: blur(1px); }
 
 /* SLOTH Component Utilities */
 @layer components {
@@ -174,6 +229,17 @@
   .pulse-glow {
     animation: pulse-glow 3s ease-in-out infinite;
   }
+
+  .sloth-dance {
+    animation: sloth-dance 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes sloth-dance {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(-6deg); }
+  50% { transform: translateY(0) rotate(6deg); }
+  75% { transform: translateY(-3px) rotate(-4deg); }
 }
 
 @keyframes chaos-bounce {

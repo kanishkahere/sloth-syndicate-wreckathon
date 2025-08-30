@@ -7,15 +7,17 @@ interface LagTheSlothProps {
   size?: 'sm' | 'md' | 'lg';
   floating?: boolean;
   useImage?: boolean;
+  celebrate?: boolean;
   onClick?: () => void;
 }
 
-export const LagTheSloth = ({ 
-  mood = 'smug', 
-  size = 'md', 
+export const LagTheSloth = ({
+  mood = 'smug',
+  size = 'md',
   floating = false,
   useImage = true,
-  onClick 
+  celebrate = false,
+  onClick
 }: LagTheSlothProps) => {
   const [isBlinking, setIsBlinking] = useState(false);
 
@@ -55,7 +57,8 @@ export const LagTheSloth = ({
       <div 
         className={`
           relative ${sizeClasses[size]} 
-          ${floating ? 'fixed bottom-6 right-6 z-50 animate-chaos-bounce' : ''} 
+          ${floating ? 'fixed bottom-6 right-6 z-50 animate-chaos-bounce' : ''}
+          ${celebrate ? 'animate-bounce' : ''}
           ${onClick ? 'cursor-pointer hover:scale-110 transition-transform duration-200' : ''}
           ${expression.color}
         `}
@@ -89,7 +92,8 @@ export const LagTheSloth = ({
     <div 
       className={`
         relative ${sizeClasses[size]} 
-        ${floating ? 'fixed bottom-6 right-6 z-50 animate-chaos-bounce' : ''} 
+        ${floating ? 'fixed bottom-6 right-6 z-50 animate-chaos-bounce' : ''}
+        ${celebrate ? 'animate-bounce' : ''}
         ${onClick ? 'cursor-pointer hover:scale-110 transition-transform duration-200' : ''}
         ${expression.color}
       `}

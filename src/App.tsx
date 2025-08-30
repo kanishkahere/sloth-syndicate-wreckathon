@@ -11,6 +11,12 @@ import RantFeed from "./pages/RantFeed";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
+import { SlothJumpScare } from "./components/SlothJumpScare";
+import { SlothBubble } from "./components/SlothBubble";
+import { GlobalCaption } from "./components/GlobalCaption";
+import { IdleWatcher } from "./components/IdleWatcher";
+import { FailWatcher } from "./components/FailWatcher";
+import { NotificationBubble } from "./components/NotificationBubble";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +38,12 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
+          <SlothJumpScare />
+          <SlothBubble />
+          <GlobalCaption />
+          <IdleWatcher />
+          <FailWatcher />
+          <NotificationBubble />
         </div>
       </BrowserRouter>
     </TooltipProvider>

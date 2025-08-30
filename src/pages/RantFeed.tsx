@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Share2, Plus, TrendingUp, Clock, Zap } from "lucide-react";
+import { Plus, TrendingUp, Clock, Zap } from "lucide-react";
 import { SlothButton } from "@/components/ui/sloth-button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ const RantFeed = () => {
   const [showCompose, setShowCompose] = useState(false);
   const [rantText, setRantText] = useState("");
 
-  const rants = [
+  const [rants, setRants] = useState([
     {
       id: 1,
       text: "Opened Google Docs to write my essay. Made the title bold. Called it productivity. Closed laptop.",
@@ -53,16 +53,26 @@ const RantFeed = () => {
       reactions: { relatable: 156, skill_issue: 23, touch_grass: 11 },
       category: "Deadline Drama"
     }
-  ];
+  ]);
 
-  const getReactionIcon = (type: string) => {
-    switch (type) {
-      case 'relatable': return '💯';
-      case 'skill_issue': return '🤡';
-      case 'touch_grass': return '🌱';
-      default: return '👍';
-    }
+  const reactTo = (id: number, type: 'skull' | 'cry' | 'fire' | 'down') => {
+    setRants(prev => prev.map(r => r.id === id ? {
+      ...r,
+      reactions: {
+        skull: (r.reactions as any).skull ?? 0 + (type === 'skull' ? 1 : 0),
+        cry: (r.reactions as any).cry ?? 0 + (type === 'cry' ? 1 : 0),
+        fire: (r.reactions as any).fire ?? 0 + (type === 'fire' ? 1 : 0),
+        down: (r.reactions as any).down ?? 0 + (type === 'down' ? 1 : 0),
+      }
+    } : r));
   };
+
+  const Reaction = ({ id, type, count }: { id: number; type: 'skull' | 'cry' | 'fire' | 'down'; count: number }) => (
+    <button onClick={() => reactTo(id, type)} className="flex items-center space-x-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+      <span>{type === 'skull' ? '💀' : type === 'cry' ? '😭' : type === 'fire' ? '🔥' : '👎'}</span>
+      <span>{count}</span>
+    </button>
+  );
 
   const handlePostRant = () => {
     if (rantText.trim()) {
@@ -155,7 +165,7 @@ const RantFeed = () => {
         {/* Rant Feed */}
         <div className="space-y-4">
           {rants.map((rant) => (
-            <Card key={rant.id} className="p-4 bg-card/80 backdrop-blur-sm border-border/50">
+            <Card key={rant.id} className="relative p-4 bg-card border-border/50">
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -174,30 +184,18 @@ const RantFeed = () => {
                   </Badge>
                 </div>
 
-                {/* Reactions */}
-                <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                  <div className="flex items-center space-x-4">
-                    {Object.entries(rant.reactions).map(([type, count]) => (
-                      <button
-                        key={type}
-                        className="flex items-center space-x-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        <span>{getReactionIcon(type)}</span>
-                        <span>{count}</span>
-                      </button>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <button className="p-1 text-muted-foreground hover:text-foreground transition-colors">
-                      <MessageCircle className="h-4 w-4" />
-                    </button>
-                    <button className="p-1 text-muted-foreground hover:text-foreground transition-colors">
-                      <Share2 className="h-4 w-4" />
-                    </button>
-                  </div>
+                {/* Reactions: meme-only */}
+                <div className="flex items-center justify-start gap-4 pt-2 border-t border-border/30">
+                  <Reaction id={rant.id} type="skull" count={(rant.reactions as any).skull ?? 0} />
+                  <Reaction id={rant.id} type="cry" count={(rant.reactions as any).cry ?? 0} />
+                  <Reaction id={rant.id} type="fire" count={(rant.reactions as any).fire ?? 0} />
+                  <Reaction id={rant.id} type="down" count={(rant.reactions as any).down ?? 0} />
                 </div>
               </div>
+            {/* occasional sticker overlay */}
+            {Math.random() < 0.3 && (
+              <div className="absolute -top-2 -right-2 bg-black text-white text-xs font-extrabold rounded-full px-2 py-1 shadow-harsh">BRO KE.</div>
+            )}
             </Card>
           ))}
         </div>
