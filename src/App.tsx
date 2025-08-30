@@ -35,6 +35,7 @@ const App = () => (
           </Routes>
           <BottomNav />
           <SlothJumpScare />
+          <SlothBubble />
         </div>
       </BrowserRouter>
     </TooltipProvider>
