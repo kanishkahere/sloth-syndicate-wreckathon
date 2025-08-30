@@ -25,9 +25,9 @@ export const SpiralIrritation = () => {
 
   return (
     <div className={`pointer-events-none fixed inset-x-0 top-4 z-40 flex justify-center transition-all ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}>
-      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground shadow-glow">
+      <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white shadow-harsh">
         <LagTheSloth mood="judge" size="sm" />
-        <span className="text-xs font-semibold uppercase tracking-wide">{text}</span>
+        <span className="text-xs font-extrabold uppercase tracking-wide">{text}</span>
       </div>
     </div>
   );
