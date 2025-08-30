@@ -181,6 +181,11 @@
 .destroy-mode { animation: screen-shake 0.6s linear infinite; }
 @keyframes screen-shake { 0%,100%{ transform: translate(0,0);} 20%{ transform: translate(-2px,1px);} 40%{ transform: translate(3px,-2px);} 60%{ transform: translate(-1px,2px);} 80%{ transform: translate(2px,0);} }
 
+/* Idle red tint */
+.idle-red .vortex { filter: hue-rotate(-90deg) saturate(1.6); opacity: 0.75; }
+/* Too many fails shrink */
+.skill-issue .vortex { transform: scale(0.92); filter: blur(1px); }
+
 /* SLOTH Component Utilities */
 @layer components {
   .sloth-card {
