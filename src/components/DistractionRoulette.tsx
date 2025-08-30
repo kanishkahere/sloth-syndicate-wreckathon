@@ -157,6 +157,24 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
           </SlothButton>
         </div>
       )}
+
+      {overlayOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="relative">
+            <div className="px-4 py-2 rounded bg-white text-black text-3xl md:text-5xl font-black leading-tight shadow-harsh text-center" style={{ fontFamily: 'Impact, Haettenschweiler, \"Arial Black\", sans-serif' }}>
+              {(currentPrompt || 'Go Face The Fridge. You Lose.').toUpperCase()}
+            </div>
+            <button
+              style={{ position: 'absolute', top: closePos.top, right: closePos.right }}
+              className="text-white text-xl"
+              onMouseEnter={() => setClosePos({ top: Math.random()*80+5, right: Math.random()*80+5 })}
+              onClick={() => setOverlayOpen(false)}
+            >
+              ✖
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
