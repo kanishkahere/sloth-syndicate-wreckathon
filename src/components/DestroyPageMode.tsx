@@ -18,7 +18,7 @@ export const DestroyPageMode = () => {
     <>
       <div className="fixed left-4 bottom-20 z-40">
         {!armed ? (
-          <SlothButton variant="destructive" onClick={() => setArmed(true)}>I QUIT</SlothButton>
+          <SlothButton variant="destructive" onClick={() => setArmed(true)}>Take a Break</SlothButton>
         ) : (
           <SlothButton variant="roast" onClick={() => setArmed(false)}>Undo Chaos</SlothButton>
         )}
