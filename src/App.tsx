@@ -13,6 +13,9 @@ import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 import { SlothJumpScare } from "./components/SlothJumpScare";
 import { SlothBubble } from "./components/SlothBubble";
+import { GlobalCaption } from "./components/GlobalCaption";
+import { IdleWatcher } from "./components/IdleWatcher";
+import { FailWatcher } from "./components/FailWatcher";
 
 const queryClient = new QueryClient();
 
