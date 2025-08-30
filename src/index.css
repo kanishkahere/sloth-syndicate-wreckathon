@@ -112,10 +112,10 @@
   height: 100vh;
   pointer-events: none;
   z-index: -1;
-  background: 
+  background:
     radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 60%),
     var(--gradient-vortex);
-  animation: vortex-spin var(--vortex-speed) linear infinite;
+  animation: vortex-spin var(--vortex-speed) linear infinite, hue-shift 12s linear infinite;
   opacity: var(--vortex-opacity);
 }
 
@@ -130,6 +130,17 @@
     animation: none;
   }
 }
+
+@keyframes hue-shift {
+  0% { filter: hue-rotate(0deg) saturate(1); }
+  50% { filter: hue-rotate(45deg) saturate(1.2); }
+  100% { filter: hue-rotate(0deg) saturate(1); }
+}
+
+/* Destroy page mode */
+.destroy-mode .vortex { animation-duration: 3s, 0.5s; opacity: 0.9; }
+.destroy-mode { animation: screen-shake 0.6s linear infinite; }
+@keyframes screen-shake { 0%,100%{ transform: translate(0,0);} 20%{ transform: translate(-2px,1px);} 40%{ transform: translate(3px,-2px);} 60%{ transform: translate(-1px,2px);} 80%{ transform: translate(2px,0);} }
 
 /* SLOTH Component Utilities */
 @layer components {
