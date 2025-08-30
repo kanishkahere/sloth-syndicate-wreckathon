@@ -9,6 +9,7 @@ interface TaskCompletionGateProps {
   taskLabel: string;
   onCancel: () => void;
   onComplete: () => void;
+  onFail?: () => void;
 }
 
 const prompts = [
@@ -85,6 +86,9 @@ export const TaskCompletionGate = ({ open, taskLabel, onCancel, onComplete }: Ta
       // Final roast: block by default
       playKazooSplat();
       setStepIndex(0);
+      if (typeof window !== 'undefined') {
+        try { (window as any).__slothFail?.(); } catch {}
+      }
     }
   };
 
