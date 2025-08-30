@@ -12,6 +12,8 @@ import { SpiralIrritation } from '@/components/SpiralIrritation';
 import { DestroyPageMode } from '@/components/DestroyPageMode';
 import { ReelCaption } from '@/components/ReelCaption';
 import { sfxVineBoom, sfxHorn } from '@/lib/sfx';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { ConfettiL } from '@/components/ConfettiL';
 
 const roastLines = [
   "Ambition detected. That's new.",
@@ -35,6 +37,7 @@ const Index = () => {
   const [gateTaskIndex, setGateTaskIndex] = useState<number | null>(null);
   const [caption, setCaption] = useState<string | null>(null);
   const [slothCelebrate, setSlothCelebrate] = useState(false);
+  const [showL, setShowL] = useState(false);
   const { toast } = useToast();
 
   // Trigger roast on idle
@@ -81,13 +84,11 @@ const Index = () => {
     setShowVortexAcceleration(true);
     setCaption('SHEEEESH PRODUCTIVITY');
     sfxVineBoom();
+    setShowL(true);
     setSlothCelebrate(true); setTimeout(() => setSlothCelebrate(false), 1500);
-    setTimeout(() => { setShowVortexAcceleration(false); setCaption(null); }, 1500);
+    setTimeout(() => { setShowVortexAcceleration(false); setCaption(null); setShowL(false); }, 1500);
 
-    toast({
-      description: "Fine, we'll add your 'real' task. But we're judging you.",
-      duration: 3000,
-    });
+    toast({ description: "Fine, we'll add your 'real' task. But we're judging you.", duration: 3000 });
   };
 
   const handleCompleteTask = (index: number) => {
@@ -155,14 +156,19 @@ const Index = () => {
               placeholder="Add a regret... I mean, task"
               className="flex-1 px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder:text-muted-foreground"
             />
-            <SlothButton 
-              variant="chaos" 
-              onClick={handleAddTask}
-              className="px-6"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Regret
-            </SlothButton>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <SlothButton
+                  variant="chaos"
+                  onClick={handleAddTask}
+                  className="px-6"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Regret
+                </SlothButton>
+              </TooltipTrigger>
+              <TooltipContent>Fake hustle incoming 💀</TooltipContent>
+            </Tooltip>
           </div>
           
           {/* Hidden actual add button for determined users */}
@@ -188,18 +194,21 @@ const Index = () => {
             
             <div className="space-y-3">
               {tasks.map((task, index) => (
-                <div 
-                  key={index} 
-                  className="flex items-center justify-between p-3 bg-surface rounded-lg border border-border hover:border-primary/50 transition-colors"
-                >
-                  <span className="flex-1">{task}</span>
-                  <SlothButton 
-                    variant="roast" 
-                    size="sm"
-                    onClick={() => handleCompleteTask(index)}
-                  >
-                    "Done"
-                  </SlothButton>
+                <div key={index} className="p-3 bg-surface rounded-lg border border-border hover:border-primary/50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div>{task}</div>
+                      <div className="text-xs text-muted-foreground">(Manifestation only 💀)</div>
+                    </div>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <SlothButton variant="roast" size="sm" onClick={() => handleCompleteTask(index)}>
+                          "Done"
+                        </SlothButton>
+                      </TooltipTrigger>
+                      <TooltipContent>Yeah right 🙄</TooltipContent>
+                    </Tooltip>
+                  </div>
                 </div>
               ))}
             </div>
@@ -261,6 +270,7 @@ const Index = () => {
       />
 
       {caption && <ReelCaption text={caption} show={!!caption} onDone={() => setCaption(null)} />}
+      {showL && <ConfettiL show={showL} onDone={() => setShowL(false)} />}
 
       {/* Procrastination Suggestion Modal */}
       <ProcrastinationSuggestionModal
