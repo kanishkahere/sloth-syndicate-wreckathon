@@ -48,6 +48,8 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
   const [timeLeft, setTimeLeft] = useState(60);
   const [isComplete, setIsComplete] = useState(false);
   const [roast, setRoast] = useState<string>('');
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [closePos, setClosePos] = useState({ top: 10, right: 10 });
 
   const spinRoulette = () => {
     const randomPrompt = distractionPrompts[Math.floor(Math.random() * distractionPrompts.length)];
