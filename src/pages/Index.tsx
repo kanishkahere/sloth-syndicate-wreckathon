@@ -277,8 +277,10 @@ const Index = () => {
           }}>Toggle Pastel Mode</SlothButton>
         </section>
 
-        <footer className="text-center py-8">
-          <p className="sloth-text-roast text-sm">
+        <footer className="text-center py-8 space-x-3">
+          <SlothButton variant="ghost" onClick={() => setSelfieOpen(true)}>Mascot Selfie</SlothButton>
+          <SlothButton variant="ghost" onClick={() => setCamouflageOpen(true)}>Boss Key</SlothButton>
+          <p className="sloth-text-roast text-sm mt-2">
             "This app isn't for doing work. It's for making avoiding work... funnier."
           </p>
         </footer>
