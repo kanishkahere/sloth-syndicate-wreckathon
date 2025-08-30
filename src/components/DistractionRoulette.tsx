@@ -107,14 +107,11 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
           <p className="text-muted-foreground sloth-text-roast">
             Why be productive when you can be... creative?
           </p>
-          <SlothButton 
-            variant="procrastinate" 
-            size="lg"
-            onClick={spinRoulette}
-            className="w-full"
-          >
-            Spin Distraction Roulette
-          </SlothButton>
+          <div className="mx-auto w-48 h-48 rounded-full border-4" style={{ boxShadow: '0 0 30px hsl(var(--accent)) inset, 0 0 30px hsl(var(--accent))' }}>
+            <button onClick={spinRoulette} className="w-full h-full rounded-full bg-background text-primary font-bold">
+              Spin
+            </button>
+          </div>
         </div>
       )}
 
