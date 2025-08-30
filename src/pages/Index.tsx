@@ -14,6 +14,10 @@ import { ReelCaption } from '@/components/ReelCaption';
 import { sfxVineBoom, sfxHorn } from '@/lib/sfx';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { ConfettiL } from '@/components/ConfettiL';
+import { FakeAchievements } from '@/components/FakeAchievements';
+import { FakeNotificationsTicker } from '@/components/FakeNotificationsTicker';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { ConfettiL } from '@/components/ConfettiL';
 
 const roastLines = [
   "Ambition detected. That's new.",
