@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 import { SlothJumpScare } from "./components/SlothJumpScare";
+import { SlothBubble } from "./components/SlothBubble";
 
 const queryClient = new QueryClient();
 
