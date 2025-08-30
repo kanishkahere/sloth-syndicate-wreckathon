@@ -291,6 +291,8 @@ const Index = () => {
       {caption && <ReelCaption text={caption} show={!!caption} onDone={() => setCaption(null)} />}
       {showL && <ConfettiL show={showL} onDone={() => setShowL(false)} />}
 
+      <FakeAchievements open={achOpen} onClose={() => setAchOpen(false)} />
+
       {/* Procrastination Suggestion Modal */}
       <ProcrastinationSuggestionModal
         isOpen={showSuggestionModal}
@@ -308,7 +310,7 @@ const Index = () => {
           // expose for internal callback + local effect
           (window as any).__slothFail = () => {};
           document.body.classList.add('fail-mode');
-          setCaption('POV: your GPA watching you rn ���');
+          setCaption('POV: your GPA watching you rn 💀');
           setTimeout(() => { document.body.classList.remove('fail-mode'); setCaption(null); }, 1400);
         }}
       />
