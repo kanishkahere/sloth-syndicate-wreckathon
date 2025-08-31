@@ -2,8 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Landing from "./pages/Landing";
+import Home from "./pages/Home";
 import Planner from "./pages/Planner";
 import Distractions from "./pages/Distractions";
 import Stats from "./pages/Stats";
@@ -22,25 +23,25 @@ import { NotificationBubble } from "./components/NotificationBubble";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen bg-background">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/planner" element={<Planner />} />
-            <Route path="/distractions" element={<Distractions />} />
-            <Route path="/stats" element={<Stats />} />
-            <Route path="/rants" element={<RantFeed />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+const AppShell = () => {
+  const location = useLocation();
+  const isLanding = location.pathname === "/";
+  return (
+    <div className="min-h-screen bg-background">
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/planner" element={<Planner />} />
+        <Route path="/distractions" element={<Distractions />} />
+        <Route path="/stats" element={<Stats />} />
+        <Route path="/rants" element={<RantFeed />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {!isLanding && (
+        <>
           <BottomNav />
           <SlothJumpScare />
           <SlothBubble />
@@ -48,7 +49,19 @@ const App = () => (
           <IdleWatcher />
           <FailWatcher />
           <NotificationBubble />
-        </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AppShell />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
