@@ -7,8 +7,10 @@ import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { LagTheSloth } from "@/components/LagTheSloth";
 import { ProcrastinationVortex } from "@/components/ProcrastinationVortex";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
+  const navigate = useNavigate();
   const [settings, setSettings] = useState({
     heckleLevel: 2, // 1: Chill, 2: Medium, 3: Feral
     soundEnabled: true,
@@ -211,6 +213,7 @@ const Settings = () => {
             </p>
             
             <div className="pt-4 space-y-2">
+              <SlothButton variant="chaos" size="sm" onClick={() => navigate('/')}>Sign out (touch grass)</SlothButton>
               <SlothButton variant="ghost" size="sm">
                 Rate Us (We Know It's 1 Star)
               </SlothButton>

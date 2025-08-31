@@ -1,339 +1,309 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ProcrastinationVortex } from '@/components/ProcrastinationVortex';
 import { LagTheSloth } from '@/components/LagTheSloth';
-import { DistractionRoulette } from '@/components/DistractionRoulette';
-import { DemotivationalQuote } from '@/components/DemotivationalQuote';
-import { ProcrastinationSuggestionModal } from '@/components/ProcrastinationSuggestionModal';
-import { TaskCompletionGate } from '@/components/TaskCompletionGate';
 import { SlothButton } from '@/components/ui/sloth-button';
-import { Plus, Brain, Trophy, Zap, Award } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ArrowRight, CheckCircle2, Clock, Gauge, ShieldQuestion, Sparkles, TrendingDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { SpiralIrritation } from '@/components/SpiralIrritation';
-import { DestroyPageMode } from '@/components/DestroyPageMode';
-import { ReelCaption } from '@/components/ReelCaption';
-import { sfxVineBoom, sfxHorn } from '@/lib/sfx';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { ConfettiL } from '@/components/ConfettiL';
-import { FakeAchievements } from '@/components/FakeAchievements';
-import { FakeNotificationsTicker } from '@/components/FakeNotificationsTicker';
-import { MascotSelfie } from '@/components/MascotSelfie';
-import { AltTabCamouflage } from '@/components/AltTabCamouflage';
 
-const roastLines = [
-  "Ambition detected. That's new.",
-  "Focus? In this economy?",
-  "If procrastination was cardio, you'd be shredded.",
-  "Love the consistency: consistently not doing it.",
-  "Inbox zero, output zero. Balance.",
-  "You have 47 tabs and no plan.",
-  "Wild move to try today.",
-  "Let's not and say we did.",
-  "Respectfully, no.",
-  "Your focus walked out."
+const heroLines = [
+  "Where ‘later’ is a lifestyle.",
+  "We motivate you to not.",
+  "Fake hustle. Real comedy.",
+  "You ready? (be honest)",
+  "Another day, another L.",
 ];
 
-const Index = () => {
-  const [showVortexAcceleration, setShowVortexAcceleration] = useState(false);
-  type TaskItem = { id: number; text: string; fake?: boolean };
-  const [tasks, setTasks] = useState<TaskItem[]>([]);
-  const [newTaskText, setNewTaskText] = useState('');
-  const [showSuggestionModal, setShowSuggestionModal] = useState(false);
-  const [gateOpen, setGateOpen] = useState(false);
-  const [gateTaskIndex, setGateTaskIndex] = useState<number | null>(null);
-  const [caption, setCaption] = useState<string | null>(null);
-  const [slothCelebrate, setSlothCelebrate] = useState(false);
-  const [showL, setShowL] = useState(false);
-  const [achOpen, setAchOpen] = useState(false);
-  const [selfieOpen, setSelfieOpen] = useState(false);
-  const [camouflageOpen, setCamouflageOpen] = useState(false);
-  const { toast } = useToast();
+const bubbleLines = [
+  "Bro, you came back?",
+  "You ready? (you’re not)",
+  "We reward failure here.",
+];
 
-  // Trigger roast on idle
+const Validator = ({ open, onDone }: { open: boolean; onDone: () => void }) => {
+  const [step, setStep] = useState(0);
   useEffect(() => {
-    const roastTimer = setTimeout(() => {
-      const randomRoast = roastLines[Math.floor(Math.random() * roastLines.length)];
-      toast({
-        description: randomRoast,
-        duration: 2500,
-      });
-    }, 5000);
+    if (!open) return;
+    setStep(0);
+    const id = setInterval(() => setStep((s) => Math.min(2, s + 1)), 260);
+    const t = setTimeout(onDone, 800);
+    return () => { clearInterval(id); clearTimeout(t); };
+  }, [open, onDone]);
+  const lines = [
+    "Verifying that you actually opened the tab…",
+    "Confirming your skill issue…",
+    "Almost there… not really. Kidding. Proceed.",
+  ];
+  return (
+    <Dialog open={open}>
+      <DialogContent aria-live="polite" className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-heading">Validator</DialogTitle>
+          <DialogDescription>Micro-delay engaged.</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-2">
+          {lines.map((l, i) => (
+            <div key={l} className={`text-sm ${i <= step ? 'opacity-100' : 'opacity-30'}`}>{l}</div>
+          ))}
+          <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+            <div className="h-full bg-primary transition-all" style={{ width: `${(step + 1) / 3 * 100}%` }} />
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-    return () => clearTimeout(roastTimer);
+const Index = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [lineIndex, setLineIndex] = useState(0);
+  const [bubbleIndex, setBubbleIndex] = useState(0);
+  const [showValidator, setShowValidator] = useState(false);
+  const validatorShown = useRef(false);
+  const [nudgeOnce, setNudgeOnce] = useState(false);
+  const [showChaos, setShowChaos] = useState(false);
+  const [showGlitch, setShowGlitch] = useState(false);
+  const [showL, setShowL] = useState(false);
+  const isMobile = useMemo(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setLineIndex((i) => (i + 1) % heroLines.length), 1500);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setBubbleIndex((i) => (i + 1) % bubbleLines.length), isMobile ? 3000 : 2000);
+    return () => clearInterval(interval);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'b') {
+        toast({ description: 'Bonus nap unlocked (not really).', duration: 1800 });
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [toast]);
 
-  const handleAddTask = () => {
-    if (!newTaskText.trim()) return;
-    
-    // Show procrastination suggestion modal instead of directly adding task
-    setShowSuggestionModal(true);
-  };
-
-  const handleSelectSuggestion = (suggestion: string) => {
-    // Add the procrastination task instead
-    setTasks([...tasks, { id: Date.now() + Math.random(), text: `🎯 ${suggestion}` }]);
-    
-    toast({
-      description: "Perfect. Now you're thinking like a true procrastinator.",
-      duration: 3000,
-    });
-
-    // Clear the original task
-    setNewTaskText('');
-  };
-
-  const handleActuallyAddTask = () => {
-    if (!newTaskText.trim()) return;
-    
-    // If they insist on adding the real task
-    setTasks([...tasks, { id: Date.now() + Math.random(), text: `⚡ ${newTaskText}` }]);
-    setNewTaskText('');
-
-    // Spiral celebration + caption
-    setShowVortexAcceleration(true);
-    setCaption('SHEEEESH PRODUCTIVITY');
-    sfxVineBoom();
-    setShowL(true);
-    setSlothCelebrate(true); setTimeout(() => setSlothCelebrate(false), 1500);
-    window.dispatchEvent(new Event('sloth:celebrate'));
-    setTimeout(() => { setShowVortexAcceleration(false); setCaption(null); setShowL(false); }, 1500);
-
-    toast({ description: "Fine, we'll add your 'real' task. But we're judging you.", duration: 3000 });
-  };
-
-  const handleCompleteTask = (index: number) => {
-    setGateTaskIndex(index);
-    setGateOpen(true);
-  };
-
-  const actuallyCompleteTask = () => {
-    if (gateTaskIndex === null) return;
-    const completedTask = tasks[gateTaskIndex]?.text;
-    setTasks(tasks.filter((_, i) => i !== gateTaskIndex));
-    setGateOpen(false);
-    setGateTaskIndex(null);
-    toast({
-      description: `"${completedTask}" - Sure, let's call it done.`,
-      duration: 3000,
-    });
-  };
-
-  const getCurrentDate = () => {
-    const today = new Date();
-    return today.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
-
   return (
-    <div className="min-h-screen relative">
-      <ProcrastinationVortex accelerate={showVortexAcceleration} />
-      <SpiralIrritation />
-      <DestroyPageMode />
-      <FakeNotificationsTicker />
-      
+    <div className="min-h-screen bg-background text-foreground relative">
+      <ProcrastinationVortex />
+
       {/* Header */}
-      <header className="relative z-10 p-6 text-center border-b border-border/50">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-heading font-bold mb-2 sloth-gradient-text">
-            SLOTH
-          </h1>
-          <p className="text-lg sloth-text-roast mb-2">
-            Productivity? Nah. We optimize the <em>vibe</em> of not doing it.
-          </p>
-          <p className="text-sm text-muted-foreground">{getCurrentDate()}</p>
+      <header className="sticky top-0 z-30 bg-background/80 backdrop-blur border-b border-border">
+        <div className="mx-auto max-w-[1200px] px-6 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 font-heading text-xl md:text-2xl">
+            <span role="img" aria-label="sloth">🦥</span>
+            <span>SLOTH</span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/signup">
+                  <SlothButton variant="ghost" size="sm" aria-label="Sign up">
+                    Sign up
+                  </SlothButton>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Adopt a sloth (you).</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <SlothButton
+                    size="sm"
+                    aria-label="Log in"
+                    onMouseEnter={() => { if (!nudgeOnce) setNudgeOnce(true); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (!validatorShown.current) {
+                        validatorShown.current = true;
+                        setShowValidator(true);
+                        setTimeout(() => { setShowValidator(false); navigate('/login'); }, 800);
+                      } else {
+                        navigate('/login');
+                      }
+                    }}
+                    style={nudgeOnce ? { transform: 'translateX(10px)' } : undefined}
+                    title="Chase your dreams."
+                  >
+                    Log in
+                  </SlothButton>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Enter the delay chamber.</TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 max-w-4xl mx-auto p-6 space-y-8">
-        
-        {/* Add Task Section */}
-        <section className="sloth-card">
-          <div className="flex items-center space-x-3 mb-4">
-            <Brain className="w-6 h-6 text-primary" />
-            <h2 className="text-xl font-heading font-bold">What are we not doing today?</h2>
-          </div>
-          
-          <div className="flex space-x-3">
-            <input
-              type="text"
-              value={newTaskText}
-              onChange={(e) => setNewTaskText(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleAddTask()}
-              placeholder="Add a regret... I mean, task"
-              className="flex-1 px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder:text-muted-foreground"
-            />
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <SlothButton
-                  variant="chaos"
-                  onClick={handleAddTask}
-                  className="px-6"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Regret
-                </SlothButton>
-              </TooltipTrigger>
-              <TooltipContent>Fake hustle incoming 💀</TooltipContent>
-            </Tooltip>
-          </div>
-          
-          {/* Hidden actual add button for determined users */}
-          {newTaskText.trim() && (
-            <div className="text-center pt-2">
-              <button 
-                onClick={handleActuallyAddTask}
-                className="text-xs text-muted-foreground hover:text-foreground underline"
-              >
-                Actually add "{newTaskText}" (you rebel)
-              </button>
+      {/* Hero */}
+      <main className="relative z-10">
+        <section className="mx-auto max-w-[1200px] px-6 pt-12 pb-8 grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h1 className="text-4xl md:text-6xl font-heading font-extrabold text-foreground mb-4">Welcome to SLOTH</h1>
+            <div className="text-lg md:text-xl text-foreground/80 h-7 mb-3 transition-opacity" aria-live="polite">
+              {heroLines[lineIndex]}
             </div>
-          )}
+            <p className="text-base md:text-lg text-foreground/70 mb-4">Your favorite productivity app that actively gets in the way.</p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/20 text-xs font-black tracking-wide uppercase text-foreground/80 mb-6" aria-label="Prod level">
+              PROD LEVEL: -100 💀
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link to="/login">
+                <SlothButton className="min-w-[200px]">Log in (eventually)</SlothButton>
+              </Link>
+              <Link to="/signup">
+                <SlothButton variant="ghost" className="min-w-[200px]">Sign up (fake hustle)</SlothButton>
+              </Link>
+            </div>
+
+            {/* Inline micro-friction banner */}
+            <div className="mt-6 rounded-2xl bg-primary/10 px-4 py-3 flex items-center justify-between">
+              <div className="font-semibold">You ready?</div>
+              <InlineGag />
+              <Link to="/login" className="text-sm underline text-primary">Okay fine → Log in</Link>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-md">
+            <div className="relative flex items-center justify-center">
+              <LagTheSloth mood="smug" size="lg" onClick={() => { setShowL(true); setTimeout(() => setShowL(false), 600); }} />
+              <div className="absolute -top-8 -right-6 md:-right-10 bg-white dark:bg-zinc-900 text-black dark:text-white rounded-2xl shadow-glow px-4 py-2 text-sm md:text-base origin-bottom-right scale-100 transition-all" aria-live="polite">
+                {bubbleLines[bubbleIndex]}
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/* Tasks List */}
-        {tasks.length > 0 && (
-          <section className="sloth-card">
-            <div className="flex items-center space-x-3 mb-4">
-              <Trophy className="w-6 h-6 text-destructive" />
-              <h2 className="text-xl font-heading font-bold">Your Alleged To-Do List</h2>
-            </div>
-            
-            <div className="space-y-3">
-              {tasks.map((task, index) => (
-                <div key={task.id} className="relative p-3 bg-surface rounded-lg border border-border hover:border-primary/50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div>{task.text}</div>
-                      <div className="text-xs text-muted-foreground">{(task.id % 2 ? '(Like this will ever happen 😂)' : '(Manifestation only 💀)')}</div>
-                    </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <SlothButton variant="roast" size="sm" onClick={() => handleCompleteTask(index)}>
-                          "Done"
-                        </SlothButton>
-                      </TooltipTrigger>
-                      <TooltipContent>Yeah right 🙄</TooltipContent>
-                    </Tooltip>
-                  </div>
-                  {task.fake && (
-                    <div className="absolute -top-2 right-2 text-[10px] font-black px-2 py-1 rounded bg-red-600 text-white">FAKE COMPLETION 🚨</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Achievements CTA */}
-        <section className="text-center">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <SlothButton onClick={() => setAchOpen(true)}>
-                <Award className="w-4 h-4 mr-2" />
-                Claim Fake Achievement
-              </SlothButton>
-            </TooltipTrigger>
-            <TooltipContent>For screenshots only 🔥</TooltipContent>
-          </Tooltip>
+        {/* Why SLOTH */}
+        <section className="mx-auto max-w-[1200px] px-6 py-8">
+          <h2 className="text-2xl md:text-3xl font-heading mb-6">Why SLOTH? (we’ll wait)</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            <ValueCard icon={<Gauge className="w-5 h-5" />} title="Delay Engine" desc="The more you try, the slower we get. Fair." roast="You clicked. Nothing happens. Art." />
+            <ValueCard icon={<ShieldQuestion className="w-5 h-5" />} title="Mascot Roasts" desc="Duolingo owl but clingier." roast="Gaslight, gatekeep, go nap." />
+            <ValueCard icon={<Sparkles className="w-5 h-5" />} title="Pretty Charts" desc="99% procrastination. 1% vibes." roast="Data that doesn’t help." />
+          </div>
         </section>
 
-        {/* Distraction Roulette */}
-        <DistractionRoulette />
-
-        {/* Demotivational Quote */}
-        <DemotivationalQuote />
-
-        {/* Stats Preview */}
-        <section className="sloth-card">
-          <div className="flex items-center space-x-3 mb-4">
-            <Zap className="w-6 h-6 text-primary animate-pulse" />
-            <h2 className="text-xl font-heading font-bold">Procrastination Stats</h2>
+        {/* How it works */}
+        <section className="mx-auto max-w-[1200px] px-6 py-8">
+          <div className="flex flex-wrap items-center gap-3 text-sm">
+            <Step label="Add task" sub="Manifest fake hustle." />
+            <ArrowRight className="opacity-50" />
+            <Step label="Get roasted" sub="Positive bullying." />
+            <ArrowRight className="opacity-50" />
+            <Step label="Almost do it" sub="Almost counts (here)." />
+            <ArrowRight className="opacity-50" />
+            <Step label="Repeat" sub="We believe in loops." />
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-surface rounded-lg">
-              <div className="text-2xl font-bold text-primary">{tasks.length}</div>
-              <div className="text-sm sloth-text-roast">Tasks Avoiding</div>
+          <p className="text-xs uppercase tracking-wide mt-3 text-foreground/60">We’re minimal. But every pixel bullies you.</p>
+        </section>
+
+        {/* Feature teases */}
+        <section className="mx-auto max-w-[1200px] px-6 pb-12 grid md:grid-cols-2 gap-6">
+          <div className="sloth-card">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-semibold text-lg">Distraction Roulette</h3>
+              <Clock className="w-4 h-4 text-primary" />
             </div>
-            <div className="text-center p-4 bg-surface rounded-lg">
-              <div className="text-2xl font-bold text-destructive">∞</div>
-              <div className="text-sm sloth-text-roast">Minutes Wasted</div>
+            <p className="text-sm text-foreground/70 mb-4">Spin to avoid responsibility.</p>
+            <SlothButton variant="link" onClick={() => setShowChaos(true)}>See chaos</SlothButton>
+          </div>
+          <div className="sloth-card">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-semibold text-lg">Panic Button</h3>
+              <TrendingDown className="w-4 h-4 text-destructive" />
             </div>
-            <div className="text-center p-4 bg-surface rounded-lg">
-              <div className="text-2xl font-bold text-accent">100%</div>
-              <div className="text-sm sloth-text-roast">Chaos Achieved</div>
-            </div>
+            <p className="text-sm text-foreground/70 mb-4">Press to regret.</p>
+            <SlothButton variant="link" onClick={() => { setShowGlitch(true); setTimeout(() => setShowGlitch(false), 1000); }}>Boom.</SlothButton>
           </div>
         </section>
 
         {/* Footer */}
-        <section className="text-center space-x-3">
-          <SlothButton variant="link" onClick={() => setShowVortexAcceleration(true)} className="mb-2">
-            Boost Spiral (why not)
-          </SlothButton>
-          <SlothButton variant="link" onClick={() => {
-            document.body.classList.toggle('pastel-mode');
-          }}>Toggle Pastel Mode</SlothButton>
-        </section>
-
-        <footer className="text-center py-8 space-x-3">
-          <SlothButton variant="ghost" onClick={() => setSelfieOpen(true)}>Mascot Selfie</SlothButton>
-          <SlothButton variant="ghost" onClick={() => setCamouflageOpen(true)}>Boss Key</SlothButton>
-          <p className="sloth-text-roast text-sm mt-2">
-            "This app isn't for doing work. It's for making avoiding work... funnier."
-          </p>
+        <footer className="mx-auto max-w-[1200px] px-6 py-10 flex items-center justify-between text-sm text-foreground/70">
+          <div>© SLOTH. Time is fake.</div>
+          <div className="flex items-center gap-4">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/privacy" className="underline">Privacy (lol)</Link>
+              </TooltipTrigger>
+              <TooltipContent>We know you did nothing.</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/terms" className="underline">Terms (read never)</Link>
+              </TooltipTrigger>
+              <TooltipContent>By continuing, you agree to continue.</TooltipContent>
+            </Tooltip>
+          </div>
         </footer>
       </main>
 
-      {/* Floating Mascot */}
-      <LagTheSloth
-        mood="smug"
-        floating
-        celebrate={slothCelebrate}
-        onClick={() => {
-          const randomRoast = roastLines[Math.floor(Math.random() * roastLines.length)];
-          toast({ description: randomRoast, duration: 2500 });
-        }}
-      />
+      {/* Modals */}
+      <Validator open={showValidator} onDone={() => {}} />
 
-      {caption && <ReelCaption text={caption} show={!!caption} onDone={() => setCaption(null)} />}
-      {showL && <ConfettiL show={showL} onDone={() => setShowL(false)} />}
+      <Dialog open={showChaos} onOpenChange={setShowChaos}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Distraction Roulette (demo)</DialogTitle>
+            <DialogDescription>Spin to avoid responsibility.</DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center gap-3 text-sm">
+            <CheckCircle2 className="text-primary" />
+            Chaotic preview. The real one lives inside.
+          </div>
+        </DialogContent>
+      </Dialog>
 
-      <FakeAchievements open={achOpen} onClose={() => setAchOpen(false)} />
-      <MascotSelfie open={selfieOpen} onClose={() => setSelfieOpen(false)} tasksCount={tasks.length} />
-      <AltTabCamouflage open={camouflageOpen} onClose={() => setCamouflageOpen(false)} />
+      {showGlitch && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 text-white">
+          <div className="text-2xl font-black">SYSTEM DESTROYED (jk)</div>
+        </div>
+      )}
 
-      {/* Procrastination Suggestion Modal */}
-      <ProcrastinationSuggestionModal
-        isOpen={showSuggestionModal}
-        onClose={() => setShowSuggestionModal(false)}
-        onSelectSuggestion={handleSelectSuggestion}
-      />
+      <ConfettiL show={showL} onDone={() => setShowL(false)} />
+    </div>
+  );
+};
 
-      {/* Task Completion Gate */}
-      <TaskCompletionGate
-        open={gateOpen}
-        taskLabel={gateTaskIndex !== null ? (tasks[gateTaskIndex]?.text || '') : ''}
-        onCancel={() => setGateOpen(false)}
-        onComplete={actuallyCompleteTask}
-        onFakeComplete={() => {
-          if (gateTaskIndex === null) return;
-          setTasks(tasks.map((t, i) => i === gateTaskIndex ? { ...t, fake: true } : t));
-          setGateOpen(false);
-          setCaption('FAKE COMPLETION 🚨');
-          setTimeout(() => setCaption(null), 1200);
-        }}
-        onFail={() => {
-          (window as any).__slothFail = () => {};
-          document.body.classList.add('fail-mode');
-          setCaption('POV: your GPA watching you rn 💀');
-          setTimeout(() => { document.body.classList.remove('fail-mode'); setCaption(null); }, 1400);
-        }}
-      />
+const Step = ({ label, sub }: { label: string; sub: string }) => (
+  <div className="px-4 py-3 rounded-2xl bg-white text-black shadow-glow">
+    <div className="font-semibold">{label}</div>
+    <div className="text-xs text-black/60">{sub}</div>
+  </div>
+);
+
+const ValueCard = ({ icon, title, desc, roast }: { icon: React.ReactNode; title: string; desc: string; roast: string }) => (
+  <Tooltip>
+    <div className="sloth-card">
+      <div className="flex items-center gap-2 mb-2 text-primary">{icon}<span className="font-semibold">{title}</span></div>
+      <div className="text-sm text-foreground/70">{desc}</div>
+    </div>
+    <TooltipContent>{roast}</TooltipContent>
+  </Tooltip>
+);
+
+const InlineGag = () => {
+  const [state, setState] = useState<'yes' | 'flip' | 'reset'>('yes');
+  useEffect(() => {
+    if (state === 'flip') {
+      const t = setTimeout(() => setState('yes'), 1000);
+      return () => clearTimeout(t);
+    }
+  }, [state]);
+  return (
+    <div className="flex items-center gap-2">
+      <SlothButton size="sm" variant="ghost" onClick={() => setState('flip')}>
+        {state === 'yes' ? 'Yes' : 'No you’re not.'}
+      </SlothButton>
+      <SlothButton size="sm" variant="ghost" onClick={() => setState('yes')}>No</SlothButton>
     </div>
   );
 };
