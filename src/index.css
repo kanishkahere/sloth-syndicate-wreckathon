@@ -258,3 +258,46 @@
     transform: scale(1.01);
   }
 }
+
+/* Landing overrides to meet spec */
+:root {
+  --background: 48 100% 98%; /* #FFFDF7 */
+  --surface: 0 0% 100%;
+  --foreground: 0 0% 7%; /* #121212 */
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --popover: 48 100% 98%;
+  --popover-foreground: 0 0% 7%;
+  --primary: 322 100% 70%; /* Pink #FF6EC7 */
+  --primary-foreground: 0 0% 100%;
+  --primary-glow: 322 100% 80%;
+  --secondary: 156 88% 72%; /* Mint #7CF6B5 */
+  --secondary-foreground: 0 0% 7%;
+  --muted: 48 30% 90%;
+  --muted-foreground: 0 0% 30%;
+  --accent: 322 100% 70%;
+  --accent-foreground: 0 0% 7%;
+  --destructive: 0 84% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 48 25% 85%;
+  --input: 48 25% 85%;
+  --ring: 180 100% 50%; /* Aqua */
+  --vortex-speed: 150s; /* 0.4 rpm */
+  --vortex-opacity: 0.07; /* ~7% */
+  --gradient-primary: linear-gradient(135deg, hsl(322 100% 70%), hsl(156 88% 72%));
+  --gradient-vortex: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    hsl(322 100% 70% / 0.5) 0deg 8deg,
+    transparent 8deg 16deg,
+    hsl(156 88% 72% / 0.5) 16deg 24deg,
+    transparent 24deg 32deg,
+    hsl(180 100% 50% / 0.5) 32deg 40deg,
+    transparent 40deg 48deg,
+    hsl(20 100% 64% / 0.5) 48deg 56deg,
+    transparent 56deg 64deg
+  );
+  --shadow-glow: 0 0 30px hsl(322 100% 70% / 0.15);
+  --shadow-harsh: 0 10px 30px -10px rgba(0,0,0,0.08);
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 800; }
