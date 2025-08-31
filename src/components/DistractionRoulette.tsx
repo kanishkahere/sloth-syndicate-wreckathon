@@ -40,9 +40,10 @@ const roastResponses = [
 
 interface DistractionRouletteProps {
   onComplete?: (timeSpent: number) => void;
+  autoSpin?: boolean;
 }
 
-export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) => {
+export const DistractionRoulette = ({ onComplete, autoSpin = false }: DistractionRouletteProps) => {
   const [currentPrompt, setCurrentPrompt] = useState<string>('');
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -87,6 +88,13 @@ export const DistractionRoulette = ({ onComplete }: DistractionRouletteProps) =>
 
     return () => clearInterval(timer);
   }, [isActive, timeLeft]);
+
+  useEffect(() => {
+    if (autoSpin && !currentPrompt && !isActive && !isComplete) {
+      spinRoulette();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoSpin]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
