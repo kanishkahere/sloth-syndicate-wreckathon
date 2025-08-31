@@ -14,6 +14,15 @@ const Planner = () => {
     { id: 4, text: "Lunch break", time: "1:00 PM", status: "scheduled", type: "break" },
     { id: 5, text: "Actually do work", time: "2:00 PM", status: "delusional", type: "work" },
   ]);
+  const [newTaskText, setNewTaskText] = useState('');
+  const addRegret = () => {
+    const text = newTaskText.trim();
+    if (!text) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    setTasks(prev => [{ id: Date.now() + Math.random(), text, time, status: 'scheduled', type: 'distraction' }, ...prev]);
+    setNewTaskText('');
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -51,18 +60,21 @@ const Planner = () => {
         <Card className="p-4 mb-6 bg-card/80 backdrop-blur-sm border-border/50">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-foreground">Today's "Schedule"</h2>
-            <SlothButton variant="ghost" size="sm" onClick={() => {
-              const text = window.prompt('What regret (task) are we adding?')?.trim();
-              if (!text) return;
-              const now = new Date();
-              const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-              setTasks(prev => [{ id: Date.now() + Math.random(), text, time, status: 'scheduled', type: 'distraction' }, ...prev]);
-            }}>
+          </div>
+          <div className="flex items-center gap-3 mb-4">
+            <input
+              type="text"
+              value={newTaskText}
+              onChange={(e) => setNewTaskText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') addRegret(); }}
+              placeholder="Add a regret... I mean, task"
+              className="flex-1 px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder:text-muted-foreground"
+            />
+            <SlothButton onClick={addRegret}>
               <Plus className="h-4 w-4 mr-2" />
               Add Regret
             </SlothButton>
           </div>
-          
           <div className="space-y-3">
             {tasks.map((task) => (
               <div key={task.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-border/30">
