@@ -51,7 +51,13 @@ const Planner = () => {
         <Card className="p-4 mb-6 bg-card/80 backdrop-blur-sm border-border/50">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-foreground">Today's "Schedule"</h2>
-            <SlothButton variant="ghost" size="sm">
+            <SlothButton variant="ghost" size="sm" onClick={() => {
+              const text = window.prompt('What regret (task) are we adding?')?.trim();
+              if (!text) return;
+              const now = new Date();
+              const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+              setTasks(prev => [{ id: Date.now() + Math.random(), text, time, status: 'scheduled', type: 'distraction' }, ...prev]);
+            }}>
               <Plus className="h-4 w-4 mr-2" />
               Add Regret
             </SlothButton>
