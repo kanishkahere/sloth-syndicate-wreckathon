@@ -63,9 +63,12 @@ const Landing = () => {
   const [bubbleIndex, setBubbleIndex] = useState(0);
   const [showValidator, setShowValidator] = useState(false);
   const validatorShown = useRef(false);
-  const [nudgeOnce, setNudgeOnce] = useState(false);
   const [showL, setShowL] = useState(false);
   const isMobile = useMemo(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches, []);
+  const [loginMoved, setLoginMoved] = useState(false);
+  const [signupMoved, setSignupMoved] = useState(false);
+  const [loginOffset, setLoginOffset] = useState<{x:number,y:number}>({x:0,y:0});
+  const [signupOffset, setSignupOffset] = useState<{x:number,y:number}>({x:0,y:0});
 
   useEffect(() => {
     const interval = setInterval(() => setLineIndex((i) => (i + 1) % heroLines.length), 1500);
@@ -87,6 +90,17 @@ const Landing = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, [toast]);
 
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!validatorShown.current) {
+      validatorShown.current = true;
+      setShowValidator(true);
+      setTimeout(() => { setShowValidator(false); navigate('/login'); }, 800);
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground relative">
       <ProcrastinationVortex />
@@ -105,10 +119,38 @@ const Landing = () => {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link to="/login">
-                <SlothButton className="min-w-[200px]">Log in (eventually)</SlothButton>
+                <SlothButton
+                  className="min-w-[200px] animate-pulse-glow"
+                  style={{ transform: `translate(${loginOffset.x}px, ${loginOffset.y}px)` }}
+                  onMouseEnter={() => {
+                    if (!loginMoved) {
+                      const x = (Math.random() * 40 - 20);
+                      const y = (Math.random() * 16 - 8);
+                      setLoginOffset({ x, y });
+                      setLoginMoved(true);
+                    }
+                  }}
+                  onClick={handleLoginClick}
+                >
+                  Log in (eventually)
+                </SlothButton>
               </Link>
               <Link to="/signup">
-                <SlothButton variant="ghost" className="min-w-[200px]">Sign up (fake hustle)</SlothButton>
+                <SlothButton
+                  variant="ghost"
+                  className="min-w-[200px]"
+                  style={{ transform: `translate(${signupOffset.x}px, ${signupOffset.y}px)` }}
+                  onMouseEnter={() => {
+                    if (!signupMoved) {
+                      const x = (Math.random() * 40 - 20);
+                      const y = (Math.random() * 16 - 8);
+                      setSignupOffset({ x, y });
+                      setSignupMoved(true);
+                    }
+                  }}
+                >
+                  Sign up (fake hustle)
+                </SlothButton>
               </Link>
             </div>
 
