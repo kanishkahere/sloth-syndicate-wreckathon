@@ -18,6 +18,7 @@ import { FakeAchievements } from '@/components/FakeAchievements';
 import { FakeNotificationsTicker } from '@/components/FakeNotificationsTicker';
 import { MascotSelfie } from '@/components/MascotSelfie';
 import { AltTabCamouflage } from '@/components/AltTabCamouflage';
+import { Link } from 'react-router-dom';
 
 const roastLines = [
   "Ambition detected. That's new.",
