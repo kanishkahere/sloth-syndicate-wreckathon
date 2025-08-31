@@ -175,7 +175,7 @@ const Index = () => {
           <div className="relative mx-auto w-full max-w-md">
             <div className="relative flex items-center justify-center">
               <LagTheSloth mood="smug" size="lg" onClick={() => { setShowL(true); setTimeout(() => setShowL(false), 600); }} />
-              <div className="absolute -top-8 -right-6 md:-right-10 bg-white text-black rounded-2xl shadow-glow px-4 py-2 text-sm md:text-base origin-bottom-right scale-100 transition-all" aria-live="polite">
+              <div className="absolute -top-8 -right-6 md:-right-10 bg-white dark:bg-zinc-900 text-black dark:text-white rounded-2xl shadow-glow px-4 py-2 text-sm md:text-base origin-bottom-right scale-100 transition-all" aria-live="polite">
                 {bubbleLines[bubbleIndex]}
               </div>
             </div>
