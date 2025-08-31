@@ -65,8 +65,8 @@ const Landing = () => {
   const validatorShown = useRef(false);
   const [showL, setShowL] = useState(false);
   const isMobile = useMemo(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches, []);
-  const [loginMoved, setLoginMoved] = useState(false);
-  const [signupMoved, setSignupMoved] = useState(false);
+  const [loginDodges, setLoginDodges] = useState(0);
+  const [signupDodges, setSignupDodges] = useState(0);
   const [loginOffset, setLoginOffset] = useState<{x:number,y:number}>({x:0,y:0});
   const [signupOffset, setSignupOffset] = useState<{x:number,y:number}>({x:0,y:0});
 
@@ -91,6 +91,15 @@ const Landing = () => {
   }, [toast]);
 
   const handleLoginClick = (e: React.MouseEvent) => {
+    if (loginDodges < 4) {
+      e.preventDefault();
+      const x = (Math.random() * 120 - 60);
+      const y = (Math.random() * 40 - 20);
+      setLoginOffset({ x, y });
+      setLoginDodges((d) => d + 1);
+      toast({ description: 'Too quick. Try again.', duration: 900 });
+      return;
+    }
     e.preventDefault();
     if (!validatorShown.current) {
       validatorShown.current = true;
@@ -123,11 +132,11 @@ const Landing = () => {
                   className="min-w-[200px] animate-pulse-glow"
                   style={{ transform: `translate(${loginOffset.x}px, ${loginOffset.y}px)` }}
                   onMouseEnter={() => {
-                    if (!loginMoved) {
-                      const x = (Math.random() * 40 - 20);
-                      const y = (Math.random() * 16 - 8);
+                    if (loginDodges < 4) {
+                      const x = (Math.random() * 120 - 60);
+                      const y = (Math.random() * 40 - 20);
                       setLoginOffset({ x, y });
-                      setLoginMoved(true);
+                      setLoginDodges((d) => d + 1);
                     }
                   }}
                   onClick={handleLoginClick}
@@ -141,11 +150,24 @@ const Landing = () => {
                   className="min-w-[200px]"
                   style={{ transform: `translate(${signupOffset.x}px, ${signupOffset.y}px)` }}
                   onMouseEnter={() => {
-                    if (!signupMoved) {
-                      const x = (Math.random() * 40 - 20);
-                      const y = (Math.random() * 16 - 8);
+                    if (signupDodges < 3) {
+                      const x = (Math.random() * 120 - 60);
+                      const y = (Math.random() * 40 - 20);
                       setSignupOffset({ x, y });
-                      setSignupMoved(true);
+                      setSignupDodges((d) => d + 1);
+                    }
+                  }}
+                  onClick={(e) => {
+                    if (signupDodges < 3) {
+                      e.preventDefault();
+                      const x = (Math.random() * 120 - 60);
+                      const y = (Math.random() * 40 - 20);
+                      setSignupOffset({ x, y });
+                      setSignupDodges((d) => d + 1);
+                      toast({ description: 'Nice try. Again.', duration: 900 });
+                    } else {
+                      e.preventDefault();
+                      navigate('/signup');
                     }
                   }}
                 >
