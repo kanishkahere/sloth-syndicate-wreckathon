@@ -7,7 +7,7 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { icon: Home, label: "Home", path: "/" },
+    { icon: Home, label: "Home", path: "/home" },
     { icon: Calendar, label: "Planner", path: "/planner" },
     { icon: Shuffle, label: "Chaos", path: "/distractions" },
     { icon: BarChart3, label: "Stats", path: "/stats" },
@@ -16,8 +16,8 @@ const BottomNav = () => {
   ];
 
   const isActive = (path: string) => {
-    if (path === "/") {
-      return location.pathname === "/";
+    if (path === "/home") {
+      return location.pathname === "/home";
     }
     return location.pathname.startsWith(path);
   };
