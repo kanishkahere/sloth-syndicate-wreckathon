@@ -40,7 +40,7 @@ const AppShell = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {!isLanding && (
+      {!isChromeHidden && (
         <>
           <BottomNav />
           <SlothJumpScare />
