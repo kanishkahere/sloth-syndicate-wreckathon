@@ -37,14 +37,14 @@ export const DestroyPageMode = () => {
       </div>
 
       <Dialog open={armed} onOpenChange={setArmed}>
-        <DialogContent className="w-[92vw] max-w-[960px] p-3 grid place-items-center">
+        <DialogContent className="w-[92vw] max-w-[960px] p-3 grid place-items-center top-[52%]">
           <DialogHeader>
             <DialogTitle className="text-center">CONGRATS YOU GOT RICKED AND ROLLED</DialogTitle>
           </DialogHeader>
           <div className="relative w-full aspect-video rounded-xl overflow-hidden">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&playsinline=1&controls=0&modestbranding=1&rel=0"
               title="Rick Astley - Never Gonna Give You Up"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
