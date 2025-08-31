@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SlothButton } from '@/components/ui/sloth-button';
 import { sfxGlitch, sfxBuzzer } from '@/lib/sfx';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export const DestroyPageMode = () => {
   const [armed, setArmed] = useState(false);
@@ -24,14 +25,22 @@ export const DestroyPageMode = () => {
         )}
       </div>
 
-      {armed && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/90 text-white text-center p-6">
-          <div>
-            <div className="text-2xl md:text-4xl font-extrabold mb-2">Congratulations, you have achieved NOTHING 👏👏👏</div>
-            <div className="opacity-70">Reel outro plays in your head.</div>
+      <Dialog open={armed} onOpenChange={setArmed}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-center">CONGRATS YOU GOT RICKED AND ROLLED</DialogTitle>
+          </DialogHeader>
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden">
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0"
+              title="Rick Astley - Never Gonna Give You Up"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
