@@ -107,10 +107,15 @@ const Home = () => {
       <DestroyPageMode />
       <FakeNotificationsTicker />
       <header className="relative z-10 p-6 text-center border-b border-border/50">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto relative">
           <h1 className="text-4xl md:text-6xl font-heading font-bold mb-2 sloth-gradient-text">SLOTH</h1>
           <p className="text-lg sloth-text-roast mb-2">Productivity? Nah. We optimize the <em>vibe</em> of not doing it.</p>
           <p className="text-sm text-muted-foreground">{getCurrentDate()}</p>
+          <div className="absolute right-0 top-0">
+            <a href="/" aria-label="Back to landing">
+              <SlothButton size="sm" variant="ghost" title="Rage Quit → Landing">Rage Quit → Landing</SlothButton>
+            </a>
+          </div>
         </div>
       </header>
       <main className="relative z-10 max-w-4xl mx-auto p-6 space-y-8">
