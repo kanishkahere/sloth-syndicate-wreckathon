@@ -16,11 +16,11 @@ const Login = () => {
           <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); }}>
             <div className="space-y-1">
               <label htmlFor="email" className="text-sm font-medium">Email</label>
-              <input id="email" type="email" required className="w-full px-4 py-3 rounded-lg border border-border bg-white focus:ring-2 focus:ring-cyan-400 outline-none" />
+              <input id="email" type="email" required className="w-full px-4 py-3 rounded-lg border border-border bg-white dark:bg-zinc-900 text-foreground focus:ring-2 focus:ring-cyan-400 outline-none" />
             </div>
             <div className="space-y-1">
               <label htmlFor="password" className="text-sm font-medium">Password</label>
-              <input id="password" type="password" required className="w-full px-4 py-3 rounded-lg border border-border bg-white focus:ring-2 focus:ring-cyan-400 outline-none" />
+              <input id="password" type="password" required className="w-full px-4 py-3 rounded-lg border border-border bg-white dark:bg-zinc-900 text-foreground focus:ring-2 focus:ring-cyan-400 outline-none" />
             </div>
             <SlothButton className="w-full">Log in</SlothButton>
           </form>
