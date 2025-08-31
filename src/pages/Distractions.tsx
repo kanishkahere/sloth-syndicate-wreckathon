@@ -109,7 +109,7 @@ const Distractions = () => {
       </div>
 
       {showRoulette && (
-        <DistractionRoulette onComplete={() => setShowRoulette(false)} />
+        <DistractionRoulette autoSpin onComplete={() => setShowRoulette(false)} />
       )}
     </div>
   );
