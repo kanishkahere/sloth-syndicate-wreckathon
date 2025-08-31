@@ -10,6 +10,8 @@ import Stats from "./pages/Stats";
 import RantFeed from "./pages/RantFeed";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import BottomNav from "./components/BottomNav";
 import { SlothJumpScare } from "./components/SlothJumpScare";
 import { SlothBubble } from "./components/SlothBubble";
