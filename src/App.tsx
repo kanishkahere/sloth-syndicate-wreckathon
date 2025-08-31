@@ -25,7 +25,7 @@ const queryClient = new QueryClient();
 
 const AppShell = () => {
   const location = useLocation();
-  const isLanding = location.pathname === "/";
+  const isChromeHidden = ["/", "/login", "/signup"].includes(location.pathname);
   return (
     <div className="min-h-screen bg-background">
       <Routes>
