@@ -17,7 +17,7 @@ const Login = () => {
         aria-hidden="true"
       />
       <div className="relative z-10 min-h-screen flex items-center justify-end px-6 py-12">
-        <div className="w-full max-w-[520px] bg-white/10 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-glow border border-white/20 text-white">
+        <div className="w-full max-w-[520px] bg-white/10 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-glow border border-white/20 text-white md:-translate-x-6">
           <h1 className="font-heading text-2xl md:text-3xl mb-1">Enter the delay chamber</h1>
           <p className="text-sm text-white/80 mb-6">We reward failure here. Bring your worst.</p>
           <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); navigate('/home'); }}>
