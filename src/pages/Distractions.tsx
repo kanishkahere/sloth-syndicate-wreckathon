@@ -24,7 +24,7 @@ const Distractions = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-background relative pb-20">
       <ProcrastinationVortex />
       
       <div className="relative z-10 p-4 max-w-md mx-auto">

@@ -5,7 +5,7 @@ import { SlothButton } from '@/components/ui/sloth-button';
 const Login = () => {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative">
       <ProcrastinationVortex />
       <video
         className="pointer-events-none fixed inset-0 w-full h-full object-cover opacity-60"
