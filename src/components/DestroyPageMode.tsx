@@ -37,7 +37,7 @@ export const DestroyPageMode = () => {
       </div>
 
       <Dialog open={armed} onOpenChange={setArmed}>
-        <DialogContent className="w-[92vw] max-w-[960px] p-3 grid place-items-center top-[60%]">
+        <DialogContent className="w-[92vw] max-w-[960px] max-h-[90vh] overflow-y-auto p-3 grid place-items-center">
           <DialogHeader>
             <DialogTitle className="text-center">CONGRATS YOU GOT RICKED AND ROLLED</DialogTitle>
           </DialogHeader>
