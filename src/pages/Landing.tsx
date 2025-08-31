@@ -5,7 +5,6 @@ import { SlothButton } from '@/components/ui/sloth-button';
 import { LagTheSloth } from '@/components/LagTheSloth';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ArrowRight, CheckCircle2, Clock, Gauge, ShieldQuestion, Sparkles, TrendingDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ConfettiL } from '@/components/ConfettiL';
 
@@ -65,8 +64,6 @@ const Landing = () => {
   const [showValidator, setShowValidator] = useState(false);
   const validatorShown = useRef(false);
   const [nudgeOnce, setNudgeOnce] = useState(false);
-  const [showChaos, setShowChaos] = useState(false);
-  const [showGlitch, setShowGlitch] = useState(false);
   const [showL, setShowL] = useState(false);
   const isMobile = useMemo(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches, []);
 
@@ -94,60 +91,11 @@ const Landing = () => {
     <div className="min-h-screen bg-background text-foreground relative">
       <ProcrastinationVortex />
 
-      {/* Header */}
-      <header className="sticky top-0 z-30 bg-background/80 backdrop-blur border-b border-border">
-        <div className="mx-auto max-w-[1200px] px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-heading text-xl md:text-2xl">
-            <span role="img" aria-label="sloth">🦥</span>
-            <span>SLOTH</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link to="/signup">
-                  <SlothButton variant="ghost" size="sm" aria-label="Sign up">
-                    Sign up
-                  </SlothButton>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>Adopt a sloth (you).</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <SlothButton
-                    size="sm"
-                    aria-label="Log in"
-                    onMouseEnter={() => { if (!nudgeOnce) setNudgeOnce(true); }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (!validatorShown.current) {
-                        validatorShown.current = true;
-                        setShowValidator(true);
-                        setTimeout(() => { setShowValidator(false); navigate('/login'); }, 800);
-                      } else {
-                        navigate('/login');
-                      }
-                    }}
-                    style={nudgeOnce ? { transform: 'translateX(10px)' } : undefined}
-                    title="Chase your dreams."
-                  >
-                    Log in
-                  </SlothButton>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Enter the delay chamber.</TooltipContent>
-            </Tooltip>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero */}
       <main className="relative z-10">
-        <section className="mx-auto max-w-[1200px] px-6 pt-12 pb-8 grid md:grid-cols-2 gap-10 items-center">
+        <section className="mx-auto max-w-[1200px] px-6 pt-16 pb-12 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h1 className="text-4xl md:text-6xl font-heading font-extrabold text-foreground mb-4">Welcome to SLOTH</h1>
-            <div className="text-lg md:text-xl text-foreground/80 h-7 mb-3 transition-opacity" aria-live="polite">
+            <h1 className="text-4xl md:text-6xl font-heading font-extrabold text-foreground mb-3">Welcome to SLOTH</h1>
+            <div className="text-lg md:text-xl text-foreground/80 h-7 mb-3" aria-live="polite">
               {heroLines[lineIndex]}
             </div>
             <p className="text-base md:text-lg text-foreground/70 mb-4">Your favorite productivity app that actively gets in the way.</p>
@@ -164,7 +112,6 @@ const Landing = () => {
               </Link>
             </div>
 
-            {/* Inline micro-friction banner */}
             <div className="mt-6 rounded-2xl bg-primary/10 px-4 py-3 flex items-center justify-between">
               <div className="font-semibold">You ready?</div>
               <InlineGag />
@@ -175,58 +122,13 @@ const Landing = () => {
           <div className="relative mx-auto w-full max-w-md">
             <div className="relative flex items-center justify-center">
               <LagTheSloth mood="smug" size="lg" onClick={() => { setShowL(true); setTimeout(() => setShowL(false), 600); }} />
-              <div className="absolute -top-8 -right-6 md:-right-10 bg-white dark:bg-zinc-900 text-black dark:text-white rounded-2xl shadow-glow px-4 py-2 text-sm md:text-base origin-bottom-right scale-100 transition-all" aria-live="polite">
+              <div className="absolute -top-8 -right-6 md:-right-10 bg-white dark:bg-zinc-900 text-black dark:text-white rounded-2xl shadow-glow px-4 py-2 text-sm md:text-base origin-bottom-right" aria-live="polite">
                 {bubbleLines[bubbleIndex]}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Why SLOTH */}
-        <section className="mx-auto max-w-[1200px] px-6 py-8">
-          <h2 className="text-2xl md:text-3xl font-heading mb-6">Why SLOTH? (we’ll wait)</h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            <ValueCard icon={<Gauge className="w-5 h-5" />} title="Delay Engine" desc="The more you try, the slower we get. Fair." roast="You clicked. Nothing happens. Art." />
-            <ValueCard icon={<ShieldQuestion className="w-5 h-5" />} title="Mascot Roasts" desc="Duolingo owl but clingier." roast="Gaslight, gatekeep, go nap." />
-            <ValueCard icon={<Sparkles className="w-5 h-5" />} title="Pretty Charts" desc="99% procrastination. 1% vibes." roast="Data that doesn’t help." />
-          </div>
-        </section>
-
-        {/* How it works */}
-        <section className="mx-auto max-w-[1200px] px-6 py-8">
-          <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Step label="Add task" sub="Manifest fake hustle." />
-            <ArrowRight className="opacity-50" />
-            <Step label="Get roasted" sub="Positive bullying." />
-            <ArrowRight className="opacity-50" />
-            <Step label="Almost do it" sub="Almost counts (here)." />
-            <ArrowRight className="opacity-50" />
-            <Step label="Repeat" sub="We believe in loops." />
-          </div>
-          <p className="text-xs uppercase tracking-wide mt-3 text-foreground/60">We’re minimal. But every pixel bullies you.</p>
-        </section>
-
-        {/* Feature teases */}
-        <section className="mx-auto max-w-[1200px] px-6 pb-12 grid md:grid-cols-2 gap-6">
-          <div className="sloth-card">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-lg">Distraction Roulette</h3>
-              <Clock className="w-4 h-4 text-primary" />
-            </div>
-            <p className="text-sm text-foreground/70 mb-4">Spin to avoid responsibility.</p>
-            <SlothButton variant="link" onClick={() => setShowChaos(true)}>See chaos</SlothButton>
-          </div>
-          <div className="sloth-card">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-lg">Panic Button</h3>
-              <TrendingDown className="w-4 h-4 text-destructive" />
-            </div>
-            <p className="text-sm text-foreground/70 mb-4">Press to regret.</p>
-            <SlothButton variant="link" onClick={() => { setShowGlitch(true); setTimeout(() => setShowGlitch(false), 1000); }}>Boom.</SlothButton>
-          </div>
-        </section>
-
-        {/* Footer */}
         <footer className="mx-auto max-w-[1200px] px-6 py-10 flex items-center justify-between text-sm text-foreground/70">
           <div>© SLOTH. Time is fake.</div>
           <div className="flex items-center gap-4">
@@ -246,49 +148,11 @@ const Landing = () => {
         </footer>
       </main>
 
-      {/* Modals */}
       <Validator open={showValidator} onDone={() => {}} />
-
-      <Dialog open={showChaos} onOpenChange={setShowChaos}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Distraction Roulette (demo)</DialogTitle>
-            <DialogDescription>Spin to avoid responsibility.</DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center gap-3 text-sm">
-            <CheckCircle2 className="text-primary" />
-            Chaotic preview. The real one lives inside.
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {showGlitch && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/80 text-white">
-          <div className="text-2xl font-black">SYSTEM DESTROYED (jk)</div>
-        </div>
-      )}
-
       <ConfettiL show={showL} onDone={() => setShowL(false)} />
     </div>
   );
 };
-
-const Step = ({ label, sub }: { label: string; sub: string }) => (
-  <div className="px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 text-black dark:text-white shadow-glow">
-    <div className="font-semibold">{label}</div>
-    <div className="text-xs text-black/60 dark:text-white/60">{sub}</div>
-  </div>
-);
-
-const ValueCard = ({ icon, title, desc, roast }: { icon: React.ReactNode; title: string; desc: string; roast: string }) => (
-  <Tooltip>
-    <div className="sloth-card">
-      <div className="flex items-center gap-2 mb-2 text-primary">{icon}<span className="font-semibold">{title}</span></div>
-      <div className="text-sm text-foreground/70">{desc}</div>
-    </div>
-    <TooltipContent>{roast}</TooltipContent>
-  </Tooltip>
-);
 
 const InlineGag = () => {
   const [state, setState] = useState<'yes' | 'flip'>('yes');
