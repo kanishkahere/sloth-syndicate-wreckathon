@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SlothButton } from '@/components/ui/sloth-button';
 import { sfxGlitch, sfxBuzzer } from '@/lib/sfx';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export const DestroyPageMode = () => {
   const [armed, setArmed] = useState(false);
+  const [dodgeCount, setDodgeCount] = useState(0);
+  const btnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (!armed) return;
@@ -14,6 +16,15 @@ export const DestroyPageMode = () => {
     const t = setTimeout(() => { sfxBuzzer(); }, 400);
     return () => { body.classList.remove('destroy-mode'); clearTimeout(t); };
   }, [armed]);
+
+  const onCloseHover = () => {
+    if (!btnRef.current) return;
+    if (dodgeCount >= 3) return; // hard but not impossible
+    const x = Math.random() * 60 - 30;
+    const y = Math.random() * 40 - 20;
+    btnRef.current.style.transform = `translate(${x}px, ${y}px)`;
+    setDodgeCount((c) => c + 1);
+  };
 
   return (
     <>
@@ -26,7 +37,7 @@ export const DestroyPageMode = () => {
       </div>
 
       <Dialog open={armed} onOpenChange={setArmed}>
-        <DialogContent className="sm:max-w-3xl">
+        <DialogContent className="sm:max-w-3xl p-3 grid place-items-center">
           <DialogHeader>
             <DialogTitle className="text-center">CONGRATS YOU GOT RICKED AND ROLLED</DialogTitle>
           </DialogHeader>
@@ -38,6 +49,15 @@ export const DestroyPageMode = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
+            <button
+              ref={btnRef}
+              onMouseEnter={onCloseHover}
+              onClick={() => setArmed(false)}
+              className="absolute top-2 right-2 text-xs px-3 py-1 rounded-full bg-black/70 text-white border border-white/20"
+              aria-label="Close"
+            >
+              Close
+            </button>
           </div>
         </DialogContent>
       </Dialog>
