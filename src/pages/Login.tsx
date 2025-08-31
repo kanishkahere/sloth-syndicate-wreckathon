@@ -6,7 +6,7 @@ const Login = () => {
   return (
     <div className="min-h-screen relative flex items-center justify-center px-6 py-12">
       <ProcrastinationVortex />
-      <div className="relative z-10 w-full max-w-[1000px] grid md:grid-cols-2 gap-8 bg-white/70 backdrop-blur rounded-3xl p-6 md:p-8 shadow-glow">
+      <div className="relative z-10 w-full max-w-[1000px] grid md:grid-cols-2 gap-8 bg-white/70 dark:bg-zinc-900/70 backdrop-blur rounded-3xl p-6 md:p-8 shadow-glow">
         <div className="rounded-2xl overflow-hidden bg-black/5 aspect-video">
           <video src="/sloth.mp4" className="w-full h-full object-cover" autoPlay muted loop playsInline aria-label="Slow sloth video" />
         </div>
