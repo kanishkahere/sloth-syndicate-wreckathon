@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ProcrastinationVortex } from '@/components/ProcrastinationVortex';
 import { SlothButton } from '@/components/ui/sloth-button';
 
